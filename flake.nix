@@ -40,6 +40,7 @@
 
             cp -r src/include/* $out/include/
             cp build/libc.a $out/lib/
+            cp build/crt0.o $out/lib/
           '';
         };
       in

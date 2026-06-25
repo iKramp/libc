@@ -1,5 +1,7 @@
+# LIBC makefile
 # Toolchain
 CC      ?= gcc
+AS      ?= as
 AR      ?= ar
 RANLIB  ?= ranlib
 
@@ -7,6 +9,7 @@ RANLIB  ?= ranlib
 SRC_DIR   := src
 BUILD_DIR := build
 LIB_NAME  := libc.a
+CRT0_OBJ  := crt0.o
 
 # Freestanding libc build flags
 CFLAGS := \
@@ -19,6 +22,8 @@ CFLAGS := \
     -I$(SRC_DIR)/include \
 	-I$(SRC_DIR)
 
+ASFLAGS := \
+
 # Recursive source discovery
 SRCS := $(shell find $(SRC_DIR) -type f -name '*.c')
 
@@ -28,13 +33,18 @@ DEPS := $(OBJS:.o=.d)
 
 .PHONY: all clean
 
-all: $(BUILD_DIR)/$(LIB_NAME)
+all: $(BUILD_DIR)/$(LIB_NAME) $(BUILD_DIR)/$(CRT0_OBJ)
 
 # Static library
 $(BUILD_DIR)/$(LIB_NAME): $(OBJS)
 	@mkdir -p $(dir $@)
 	$(AR) rcs $@ $^
 	$(RANLIB) $@
+
+# CRT0 assembly
+$(BUILD_DIR)/$(CRT0_OBJ): $(SRC_DIR)/internal/crt0.S
+	@mkdir -p $(dir $@)
+	$(CC) $(ASFLAGS) -c $< -o $@
 
 # Object compilation
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
