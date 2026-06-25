@@ -1,33 +1,66 @@
 {
-  description = "Rust OS Kernel Development Flake";
+  description = "LIBC for my rust OS";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url  = "github:numtide/flake-utils";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }: 
-  let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs { inherit system; };
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
 
+        libc = pkgs.stdenv.mkDerivation {
+          pname = "my-libc";
+          version = "0.1.0";
 
-  in {
-    devShells.${system}.default = pkgs.mkShell {
+          src = self;
 
-      buildInputs = with pkgs; [
-        gdb
-        nasm
-        xorriso
-        gcc
-        gnumake
-        bear
-      ];
+          nativeBuildInputs = with pkgs; [
+            gnumake
+          ];
 
-      shellHook = ''
-        exec zsh
-      '';
-    };
-  };
+          buildPhase = ''
+            make
+          '';
+
+          installPhase = ''
+            mkdir -p $out/include
+            mkdir -p $out/lib
+
+            cp -r src/include/* $out/include/
+            cp build/libc.a $out/lib/
+          '';
+        };
+      in
+      {
+        packages.default = libc;
+        packages.libc = libc;
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            gdb
+            nasm
+            xorriso
+            gcc
+            gnumake
+            bear
+          ];
+
+          shellHook = ''
+            exec zsh
+          '';
+        };
+      }
+    );
 }
-
