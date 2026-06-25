@@ -56,6 +56,7 @@
             gcc
             gnumake
             bear
+            nasm
           ];
 
           shellHook = ''
