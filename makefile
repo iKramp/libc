@@ -1,7 +1,7 @@
 # LIBC makefile
 # Toolchain
 CC      ?= gcc
-AS      ?= as
+NASM    ?= nasm
 AR      ?= ar
 RANLIB  ?= ranlib
 
@@ -22,7 +22,7 @@ CFLAGS := \
     -I$(SRC_DIR)/include \
 	-I$(SRC_DIR)
 
-ASFLAGS := \
+NASMFLAGS := -f elf64
 
 # Recursive source discovery
 SRCS := $(shell find $(SRC_DIR) -type f -name '*.c')
@@ -44,7 +44,7 @@ $(BUILD_DIR)/$(LIB_NAME): $(OBJS)
 # CRT0 assembly
 $(BUILD_DIR)/$(CRT0_OBJ): $(SRC_DIR)/internal/crt0.S
 	@mkdir -p $(dir $@)
-	$(CC) $(ASFLAGS) -c $< -o $@
+	$(NASM) $(NASMFLAGS) $< -o $@
 
 # Object compilation
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
