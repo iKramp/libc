@@ -1,7 +1,7 @@
 #ifndef LIBC_SYSCALL_FS_H
 #define LIBC_SYSCALL_FS_H
 
-#include "../abi/filesystem.h"
+#include "include/sys/abi/filesystem.h"
 
 int _fopen(uint64_t path_len, const char* path_ptr, uint64_t, uint64_t flags);
 int _fclose(uint64_t fd);

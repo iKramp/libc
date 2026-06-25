@@ -2,7 +2,7 @@
 #define LIBC_SYSCALL_SYSCALL_H
 
 #include "stdint.h"
-#include "../abi/syscall_group.h"
+#include "include/sys/abi/syscall_group.h"
 
 int _lsgroups(uint64_t buf_size_elements, MappedSyscallGroup *buf);
 int _lsallgroups(uint64_t buf_size_elements, SyscallGroupInfo *buf);

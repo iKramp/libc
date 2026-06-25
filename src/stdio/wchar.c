@@ -1,4 +1,4 @@
-#include "../include/stdio.h"
+#include "include/stdio.h"
 
 //do NOT support wide char inout
 //wide char input

@@ -1,4 +1,4 @@
-#include "../include/ctype.h"
+#include "include/ctype.h"
 
 int isalnum(int chr) {
     return isdigit(chr) || isalpha(chr);

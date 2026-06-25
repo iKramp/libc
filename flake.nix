@@ -21,6 +21,7 @@
         xorriso
         gcc
         gnumake
+        bear
       ];
 
       shellHook = ''

@@ -14,6 +14,5 @@ typedef struct {
 #define NAMESPACE_TYPE_FILESYSTEM 2
 
 CurrNamespaces *get_curr_namespaces();
-void init_namespaces();
 
 #endif

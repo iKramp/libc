@@ -1,4 +1,5 @@
-#include "../include/stdio.h"
+#include "include/stdio.h"
+#include "internal/null.h"
 
 FILE *get_stdin() {
     return NULL;

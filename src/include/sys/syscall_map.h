@@ -12,6 +12,5 @@ typedef struct {
 } MappedSyscallPacks;
 
 MappedSyscallPacks *get_mapped_syscalls();
-void init_mapped_syscall_packs();
 
 #endif

@@ -1,4 +1,4 @@
-#include "namespace.h"
+#include "include/sys/namespace.h"
 
 static CurrNamespaces curr_namespaces;
 

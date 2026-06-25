@@ -2,7 +2,6 @@
 #define LIBC_STDIO_H
 
 #include "stdint.h"
-#include "../private_headers/null.h"
 
 typedef struct {
     uint64_t buffer_size;
