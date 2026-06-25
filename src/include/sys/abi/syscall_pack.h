@@ -6,12 +6,12 @@
 typedef struct {
     uint8_t name_len;
     uint8_t name[31];
-} SyscallGroupInfo;
+} SyscallPackInfo;
 
 typedef struct {
-    SyscallGroupInfo info;
+    SyscallPackInfo info;
     uint32_t offset;
     uint32_t mask;
-} MappedSyscallGroup;
+} MappedSyscallPack;
 
 #endif
