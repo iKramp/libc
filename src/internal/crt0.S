@@ -1,24 +1,25 @@
-.text
 
-.extern saved_rax
-.extern saved_rbx
-.extern saved_rcx
-.extern saved_rdx
-.extern saved_rsi
-.extern saved_rdi
-.extern saved_rsp
-.extern saved_rbp
-.extern saved_r8
-.extern saved_r;
-.extern saved_r10
-.extern saved_r11
-.extern saved_r12
-.extern saved_r13
-.extern saved_r14
-.extern saved_r15
-.extern _libc_start
+extern saved_rax
+extern saved_rbx
+extern saved_rcx
+extern saved_rdx
+extern saved_rsi
+extern saved_rdi
+extern saved_rsp
+extern saved_rbp
+extern saved_r8
+extern saved_r9
+extern saved_r10
+extern saved_r11
+extern saved_r12
+extern saved_r13
+extern saved_r14
+extern saved_r15
+extern _libc_start
 
-.global _start
+.text:
+
+global _start
 
 
 _start:
