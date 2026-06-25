@@ -1,6 +1,6 @@
-#include "include/syscalls/namespace.h"
-#include "include/syscalls/syscall_generic.h"
-#include "include/sys/syscall_map.h"
+#include "syscalls/namespace.h"
+#include "syscalls/syscall_generic.h"
+#include "sys/syscall_map.h"
 
 int _mknamespace(uint32_t namespace_type, uint64_t existing_id) {
     uint64_t syscall_index = get_mapped_syscalls()->namespace_pack + 0;

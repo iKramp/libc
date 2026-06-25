@@ -1,6 +1,6 @@
-#include "include/syscalls/filesystem.h"
-#include "include/syscalls/syscall_generic.h"
-#include "include/sys/syscall_map.h"
+#include "syscalls/filesystem.h"
+#include "syscalls/syscall_generic.h"
+#include "sys/syscall_map.h"
 
 int _fopen(uint64_t path_len, const char* path_ptr, uint64_t fd, uint64_t flags) {
     uint64_t syscall_index = get_mapped_syscalls()->filesystem_pack + 0;

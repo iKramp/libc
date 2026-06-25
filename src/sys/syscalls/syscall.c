@@ -1,6 +1,6 @@
-#include "include/syscalls/syscall.h"
-#include "include/syscalls/syscall_generic.h"
-#include "include/sys/syscall_map.h"
+#include "syscalls/syscall.h"
+#include "syscalls/syscall_generic.h"
+#include "sys/syscall_map.h"
 
 int _lsgroups(uint64_t buf_size_elements, MappedSyscallGroup *buf) {
     uint64_t syscall_index = get_mapped_syscalls()->syscall_pack + 0;

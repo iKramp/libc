@@ -1,4 +1,4 @@
-#include "include/syscalls/proc.h"
+#include "syscalls/proc.h"
 #include <stdint.h>
 
 uint64_t saved_rax;

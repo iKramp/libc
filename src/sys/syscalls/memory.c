@@ -1,6 +1,6 @@
-#include "include/syscalls/memory.h"
-#include "include/syscalls/syscall_generic.h"
-#include "include/sys/syscall_map.h"
+#include "syscalls/memory.h"
+#include "syscalls/syscall_generic.h"
+#include "sys/syscall_map.h"
 
 int _make_region(uint64_t address, uint8_t order, uint8_t permissions,
                  uint8_t region_type, uint64_t management_mode,

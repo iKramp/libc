@@ -1,4 +1,4 @@
-#include "include/stdio.h"
+#include "stdio.h"
 #include "internal/null.h"
 
 FILE *get_stdin() {

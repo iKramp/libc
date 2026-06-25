@@ -1,4 +1,4 @@
-#include "include/syscalls/syscall_generic.h"
+#include "syscalls/syscall_generic.h"
 
 syscall_2ret syscall0(uint64_t syscall_index, uint64_t namespace_index) {
     uint64_t ret0, ret1;

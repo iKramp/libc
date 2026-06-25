@@ -1,6 +1,6 @@
-#include "include/syscalls/proc.h"
-#include "include/sys/syscall_map.h"
-#include "include/syscalls/syscall_generic.h"
+#include "syscalls/proc.h"
+#include "sys/syscall_map.h"
+#include "syscalls/syscall_generic.h"
 
 int _exec(ExecArgs *args_ptr) {
     uint64_t syscall_index = get_mapped_syscalls()->proc_pack + 0;

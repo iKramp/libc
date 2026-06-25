@@ -16,7 +16,8 @@ CFLAGS := \
     -fno-stack-protector \
     -Wall \
     -Wextra \
-    -I$(SRC_DIR)
+    -I$(SRC_DIR)/include \
+	-I$(SRC_DIR)
 
 # Recursive source discovery
 SRCS := $(shell find $(SRC_DIR) -type f -name '*.c')
