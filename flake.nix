@@ -28,6 +28,7 @@
 
           nativeBuildInputs = with pkgs; [
             gnumake
+            nasm
           ];
 
           buildPhase = ''
