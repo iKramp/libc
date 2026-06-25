@@ -2,7 +2,7 @@
 #define LIBC_SYSCALL_NAMESPACE_H
 
 #include "stdint.h"
-#include "include/sys/abi/namespace.h"
+#include "sys/abi/namespace.h"
 
 typedef struct {
     uint64_t filled_elements;
