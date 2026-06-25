@@ -1,7 +1,7 @@
 #ifndef LIBC_FSABI_H
 #define LIBC_FSABI_H
 
-#include <stdint.h>
+#include "stdint.h"
 
 // OpenFlags:
 // uint64_t

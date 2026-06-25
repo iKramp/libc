@@ -3,7 +3,7 @@
 
 #include "sys/abi/filesystem.h"
 
-int _fopen(uint64_t path_len, const char* path_ptr, uint64_t, uint64_t flags);
+int _fopen(uint64_t path_len, const char* path_ptr, uint64_t fd, uint64_t flags);
 int _fclose(uint64_t fd);
 int _fread(uint64_t fd, uint64_t count, void* buf);
 int _fwrite(uint64_t fd, uint64_t count, const void* buf);
