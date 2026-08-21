@@ -3,8 +3,6 @@
 #include "sys/abi/syscall_pack.h"
 #include "syscalls/syscall.h"
 
-#define SYSCALL_PACK_ARR_CNT 32
-
 MappedSyscallPack syscall_pack_arr[SYSCALL_PACK_ARR_CNT];
 
 MappedSyscallPacks *get_mapped_syscalls() {
@@ -31,8 +29,39 @@ uint32_t find_index(const char *name, uint32_t name_len, uint32_t entry_count) {
     return 0xFFFFFFFF; //not found
 }
 
+uint32_t map_missing_pack(const char *name, uint32_t name_len) {
+    uint32_t offset = -1;
+    for (uint32_t offset_index = 0; offset_index < SYSCALL_PACK_ARR_CNT; offset_index++) {
+        for (uint32_t checking_pack_index = 0; checking_pack_index < SYSCALL_PACK_ARR_CNT; checking_pack_index++) {
+            if (syscall_pack_arr[checking_pack_index].offset == offset_index) {
+                goto next_offset;
+            }
+        }
+        offset = offset_index;
+        break; //found an unused offset
+
+next_offset:
+    }
+
+    if (offset == (uint32_t)-1) {
+        early_panic();
+    }
+
+    int ret = _mapgroup(name_len, (uint8_t *)name, offset);
+    if (ret < 0) {
+        early_panic();
+    }
+    return offset;
+}
+
+//libc assumes at most SYSCALL_PACK_ARR_CNT packs at program start
 void init_mapped_syscall_packs() {
     MappedSyscallPacks *mapped_syscalls = get_mapped_syscalls();
+    mapped_syscalls->filesystem_pack = 0xFFFFFFFF; //invalid
+    mapped_syscalls->proc_pack = 0xFFFFFFFF; //invalid
+    mapped_syscalls->memory_pack = 0xFFFFFFFF; //invalid
+    mapped_syscalls->namespace_pack = 0xFFFFFFFF; //invalid
+
     mapped_syscalls->syscall_pack = 0xFFFFFFE0; //highest valid pack offset - standard
     int ret = _lsgroups(SYSCALL_PACK_ARR_CNT, syscall_pack_arr);
     if (ret < 0) {
@@ -47,8 +76,20 @@ void init_mapped_syscall_packs() {
     uint32_t memory_index = find_index("memory", 6, num_packs);
     uint32_t namespace_index = find_index("namespace_management", 20, num_packs);
 
-    if (fs_index == 0xFFFFFFFF || proc_index == 0xFFFFFFFF || syscall_index == 0xFFFFFFFF || memory_index == 0xFFFFFFFF || namespace_index == 0xFFFFFFFF) {
-        early_panic();
+    if (fs_index == 0xFFFFFFFF) {
+        fs_index = map_missing_pack("fs", 2);
+    }
+    if (proc_index == 0xFFFFFFFF) {
+        proc_index = map_missing_pack("proc", 4);
+    }
+    if (syscall_index == 0xFFFFFFFF) {
+        syscall_index = map_missing_pack("syscall_management", 18);
+    }
+    if (memory_index == 0xFFFFFFFF) {
+        memory_index = map_missing_pack("memory", 6);
+    }
+    if (namespace_index == 0xFFFFFFFF) {
+        namespace_index = map_missing_pack("namespace_management", 20);
     }
 
     mapped_syscalls->filesystem_pack = syscall_pack_arr[fs_index].offset;

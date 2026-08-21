@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 
+//-1 represents invalid/not mapped pack
 typedef struct {
     uint32_t filesystem_pack;
     uint32_t syscall_pack;

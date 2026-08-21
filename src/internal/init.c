@@ -1,3 +1,5 @@
+#include "internal/sys/syscall_map.h"
+#include "internal/sys/namespace.h"
 #include "syscalls/proc.h"
 #include <stdint.h>
 
@@ -21,7 +23,8 @@ uint64_t saved_r15;
 extern int main();
 
 void _libc_init() {
-
+    init_mapped_syscall_packs();
+    init_namespaces();
 }
 
 void _libc_start() {

@@ -3,6 +3,8 @@
 
 #include "stdint.h"
 
+#define SYSCALL_PACK_ARR_CNT 32
+
 typedef struct {
     uint8_t name_len;
     uint8_t name[31];
