@@ -30,28 +30,29 @@ uint32_t find_index(const char *name, uint32_t name_len, uint32_t entry_count) {
 }
 
 uint32_t map_missing_pack(const char *name, uint32_t name_len) {
-    uint32_t offset = -1;
+    uint32_t final_offset = -1;
     for (uint32_t offset_index = 0; offset_index < SYSCALL_PACK_ARR_CNT; offset_index++) {
+        uint32_t offset = offset_index * 32; //each pack is 32 bytes
         for (uint32_t checking_pack_index = 0; checking_pack_index < SYSCALL_PACK_ARR_CNT; checking_pack_index++) {
-            if (syscall_pack_arr[checking_pack_index].offset == offset_index) {
+            if (syscall_pack_arr[checking_pack_index].offset == offset) {
                 goto next_offset;
             }
         }
-        offset = offset_index;
+        final_offset = offset;
         break; //found an unused offset
 
 next_offset:
     }
 
-    if (offset == (uint32_t)-1) {
+    if (final_offset == (uint32_t)-1) {
         early_panic();
     }
 
-    int ret = _mapgroup(name_len, (uint8_t *)name, offset);
+    int ret = _mapgroup(name_len, (uint8_t *)name, final_offset);
     if (ret < 0) {
         early_panic();
     }
-    return offset;
+    return final_offset;
 }
 
 //libc assumes at most SYSCALL_PACK_ARR_CNT packs at program start
