@@ -43,7 +43,7 @@ uint32_t map_missing_pack(const char *name, uint32_t name_len, MappedSyscallPack
             mapped_syscalls->syscall_pack == offset ||
             mapped_syscalls->memory_pack == offset ||
             mapped_syscalls->namespace_pack == offset) {
-            goto next_offset;
+            continue;
         }
 
         final_offset = offset;
@@ -86,24 +86,24 @@ void init_mapped_syscall_packs() {
     uint32_t namespace_index = find_index("namespace_management", 20, num_packs);
 
     if (fs_index == 0xFFFFFFFF) {
-        fs_index = map_missing_pack("fs", 2, mapped_syscalls);
-        mapped_syscalls->filesystem_pack = syscall_pack_arr[fs_index].offset;
+        uint32_t fs_offset = map_missing_pack("fs", 2, mapped_syscalls);
+        mapped_syscalls->filesystem_pack = fs_offset;
     }
     if (proc_index == 0xFFFFFFFF) {
-        proc_index = map_missing_pack("proc", 4, mapped_syscalls);
-        mapped_syscalls->proc_pack = syscall_pack_arr[proc_index].offset;
+        uint32_t proc_offset = map_missing_pack("proc", 4, mapped_syscalls);
+        mapped_syscalls->proc_pack = proc_offset;
     }
     if (syscall_index == 0xFFFFFFFF) {
-        syscall_index = map_missing_pack("syscall_management", 18, mapped_syscalls);
-        mapped_syscalls->syscall_pack = syscall_pack_arr[syscall_index].offset;
+        uint32_t syscall_offset = map_missing_pack("syscall_management", 18, mapped_syscalls);
+        mapped_syscalls->syscall_pack = syscall_offset;
     }
     if (memory_index == 0xFFFFFFFF) {
-        memory_index = map_missing_pack("memory", 6, mapped_syscalls);
-        mapped_syscalls->memory_pack = syscall_pack_arr[memory_index].offset;
+        uint32_t memory_offset = map_missing_pack("memory", 6, mapped_syscalls);
+        mapped_syscalls->memory_pack = memory_offset;
     }
     if (namespace_index == 0xFFFFFFFF) {
-        namespace_index = map_missing_pack("namespace_management", 20, mapped_syscalls);
-        mapped_syscalls->namespace_pack = syscall_pack_arr[namespace_index].offset;
+        uint32_t namespace_offset = map_missing_pack("namespace_management", 20, mapped_syscalls);
+        mapped_syscalls->namespace_pack = namespace_offset;
     }
 
 }
