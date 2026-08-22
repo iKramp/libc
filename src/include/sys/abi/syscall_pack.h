@@ -1,5 +1,5 @@
-#ifndef LIBC_SYSCALL_GROUP_H
-#define LIBC_SYSCALL_GROUP_H
+#ifndef LIBC_SYSCALL_PACK_H
+#define LIBC_SYSCALL_PACK_H
 
 #include "stdint.h"
 
