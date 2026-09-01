@@ -4,7 +4,5 @@
 #include <stddef.h>
 
 void libc_heap_init();
-void *malloc(size_t size);
-void free(void *ptr);
 
 #endif
