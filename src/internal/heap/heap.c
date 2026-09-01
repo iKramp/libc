@@ -24,3 +24,17 @@ void libc_heap_init() {
     heap_region_id = ret.ret0;
     heap_start = (void *) ret.ret1;
 }
+
+void *malloc(size_t size) {
+    void *start = heap_start;
+    //align start to 8B
+    if ((uintptr_t)start % 8 != 0) {
+        start = (void *)(((uintptr_t)start + 7) & ~((uintptr_t)7));
+    }
+    heap_start = (void *)((uintptr_t)start + size);
+    return start;
+}
+
+void free(void *ptr) {
+    //do nothing
+}
