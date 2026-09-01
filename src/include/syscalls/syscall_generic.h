@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 typedef struct {
-    int ret0;
-    int ret1;
+    uint64_t ret0;
+    uint64_t ret1;
 } syscall_2ret; //most standard return ig?
 
 syscall_2ret syscall0(uint64_t syscall_index, uint64_t namespace_index);
