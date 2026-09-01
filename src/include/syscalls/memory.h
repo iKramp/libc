@@ -2,6 +2,7 @@
 #define LIBC_SYSCALL_MEMORY_H
 
 #include "stdint.h"
+#include "syscalls/syscall_generic.h"
 
 static inline uint8_t make_mem_range_permissions(uint8_t write, uint8_t execute) {
     return ((write != 0) << 0) | ((execute != 0) << 1);
@@ -33,7 +34,7 @@ static inline uint64_t make_management_mode(uint8_t mode, uint8_t submode) {
     return ((uint64_t)mode << 0) | ((uint64_t)submode << 32);
 }
 
-int _make_region(uint64_t address, uint8_t order, uint8_t permissions,
+syscall_2ret _make_region(uint64_t address, uint8_t order, uint8_t permissions,
                  uint8_t region_type, uint64_t management_mode,
                  uint64_t name_len, uint8_t *name_ptr);
 int _remove_region(uint64_t region_id);

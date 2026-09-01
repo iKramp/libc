@@ -1,8 +1,11 @@
 #include "heap.h"
 #include "syscalls/memory.h"
+#include "syscalls/proc.h"
+#include "syscalls/syscall_generic.h"
 #include <stdint.h>
 
 static void *heap_start = NULL;
+static uint64_t heap_region_id = 0;
 
 void libc_heap_init() {
     uint64_t addr = 0;
@@ -12,5 +15,12 @@ void libc_heap_init() {
     uint64_t management_mode = 0; //managed by kernel, growing up
     uint64_t region_name_len = 4;
     uint8_t *region_name = (uint8_t *) "heap";
-    _make_region(addr, order, permissions, region_type, management_mode, region_name_len, region_name);
+    syscall_2ret ret = _make_region(addr, order, permissions, region_type, management_mode, region_name_len, region_name);
+
+    if (ret.ret0 == -1) {
+        _exit(1);
+    }
+
+    heap_region_id = ret.ret0;
+    heap_start = (void *) ret.ret1;
 }
