@@ -28,6 +28,16 @@ static inline uint8_t is_open_flag_truncate(uint64_t flags) {
     return (flags & 8) != 0;
 }
 
+// ReadFlags:
+// uint64_t
+// bit 0: nonblocking
+static inline uint64_t make_read_flags(uint8_t nonblocking) {
+    return (nonblocking != 0);
+}
+static inline uint8_t is_read_flag_nonblocking(uint64_t flags) {
+    return (flags & 1) != 0;
+}
+
 typedef enum {
     START = 0,
     CURRENT = 1,

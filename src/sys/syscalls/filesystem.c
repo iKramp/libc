@@ -16,10 +16,10 @@ int _fclose(uint64_t fd) {
     return ret.ret0;
 }
 
-int _fread(uint64_t fd, uint64_t count, void* buf) {
+int _fread(uint64_t fd, uint64_t count, void* buf, uint64_t flags) {
     uint64_t syscall_index = get_mapped_syscalls()->filesystem_pack + 2;
     uint64_t ns = 0;
-    syscall_2ret ret = syscall3(syscall_index, ns, fd, count, (uint64_t)buf);
+    syscall_2ret ret = syscall4(syscall_index, ns, fd, count, (uint64_t)buf, flags);
     return ret.ret0;
 }
 
