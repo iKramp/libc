@@ -3,7 +3,7 @@
 #include "syscalls/filesystem.h"
 #include <string.h>
 
-void move_data_to_start(FILE *stream) {
+static void move_data_to_start(FILE *stream) {
     if (stream->buffer_pos > 0) {
         memmove(stream->buffer, stream->buffer + stream->buffer_pos, stream->buffer_end - stream->buffer_pos);
         stream->buffer_end -= stream->buffer_pos;
