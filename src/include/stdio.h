@@ -79,7 +79,7 @@ int fprintf();
 int fputc();
 int fputs();
 int fread();
-int fscanf() ;
+int fscanf();
 int fwrite(); 
 int getc();
 int getchar(); 
