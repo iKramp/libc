@@ -1,3 +1,4 @@
+#include "stdio/write.h"
 #include "syscalls/filesystem.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,4 +142,8 @@ FILE *freopen(const char *filename, const char *mode, FILE *stream) {
     }
 
     return stream;
+}
+
+int fflush(FILE *stream) {
+    return drain_buffer(stream, 1);
 }
