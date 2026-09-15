@@ -113,4 +113,8 @@ int setvbuf(FILE *stream, char *buffer, int mode, size_t size);
 
 //fseek first flushes
 //...
+
+
+//error handling
+int feof(FILE *stream);
 #endif
