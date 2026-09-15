@@ -34,7 +34,7 @@ size_t read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
     size_t stream_size = stream->buffer_end - stream->buffer_pos;
     size_t max_size = stream_size < requested_size ? stream_size : requested_size;
     size_t n_elements = max_size / size;
-    memccpy(ptr, stream->buffer + stream->buffer_pos, size, n_elements);
+    memcpy(ptr, stream->buffer + stream->buffer_pos, size * n_elements);
     stream->buffer_pos += n_elements * size;
     return n_elements;
 }

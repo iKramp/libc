@@ -36,7 +36,7 @@ size_t write_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
     size_t available_space = stream->buffer_size - stream->buffer_end;
     size_t available_elements = available_space / size;
     size_t n_elements = available_elements < nmemb ? available_elements : nmemb;
-    memccpy(stream->buffer + stream->buffer_end, ptr, n_elements, size);
+    memcpy(stream->buffer + stream->buffer_end, ptr, n_elements * size);
     stream->buffer_end += n_elements * nmemb;
     return n_elements;
 }

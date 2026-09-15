@@ -2,8 +2,8 @@
 #include "syscalls/memory.h"
 #include "syscalls/proc.h"
 #include "syscalls/syscall_generic.h"
-#include <stdint.h>
-#include <stddef.h>
+#include "stdint.h"
+#include "stddef.h"
 
 static void *heap_start = NULL;
 static uint64_t heap_region_id = 0;

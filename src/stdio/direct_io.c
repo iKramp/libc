@@ -1,6 +1,6 @@
 #include "stdio.h"
-#include "internal/file_io/read.h"
-#include "internal/file_io/write.h"
+#include "stdio/read.h"
+#include "stdio/write.h"
 
 size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream) {
     if (size == 0 || nmemb == 0) {
