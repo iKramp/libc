@@ -4,7 +4,7 @@
 #include "stdint.h"
 
 typedef int64_t ptrdiff_t;
-typedef uint64_t size_t;
+typedef __SIZE_TYPE__ size_t;
 typedef uint32_t wchar_t;
 
 #define NULL ((void*)0)
