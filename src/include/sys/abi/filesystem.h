@@ -54,6 +54,12 @@ typedef enum {
     FIFO = 6
 } InodeType;
 
+typedef enum {
+    NORMAL = 0,
+    TEMPORARY_EOF = 1,
+    PERMANENT_EOF = 2
+} ReadResult;
+
 // InotePermissionFlags
 // uint32_t
 // bit 0: other x
