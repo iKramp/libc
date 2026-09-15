@@ -1,5 +1,5 @@
 #include "stdio.h"
-#include "internal/null.h"
+#include "stddef.h"
 
 FILE *get_stdin() {
     return NULL;

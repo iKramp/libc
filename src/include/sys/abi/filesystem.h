@@ -39,25 +39,25 @@ static inline uint8_t is_read_flag_nonblocking(uint64_t flags) {
 }
 
 typedef enum {
-    START = 0,
-    CURRENT = 1,
-    END = 2
+    SEEKMODE_START = 0,
+    SEEKMODE_CURRENT = 1,
+    SEEKMODE_END = 2
 } SeekMode;
 
 typedef enum {
-    FILE = 0,
-    DIRECTORY = 1,
-    SYMLINK = 2,
-    SOCKET = 3,
-    BLOCK_DEVICE = 4,
-    CHAR_DEVICE = 5,
-    FIFO = 6
+    ITYPE_FILE = 0,
+    ITYPE_DIRECTORY = 1,
+    ITYPE_SYMLINK = 2,
+    ITYPE_SOCKET = 3,
+    ITYPE_BLOCK_DEVICE = 4,
+    ITYPE_CHAR_DEVICE = 5,
+    ITYPE_FIFO = 6
 } InodeType;
 
 typedef enum {
-    NORMAL = 0,
-    TEMPORARY_EOF = 1,
-    PERMANENT_EOF = 2
+    READ_RESULT_NORMAL = 0,
+    READ_RESULT_TEMPORARY_EOF = 1,
+    READ_RESULT_PERMANENT_EOF = 2
 } ReadResult;
 
 // InotePermissionFlags

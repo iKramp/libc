@@ -2,10 +2,12 @@
 #define LIBC_STDIO_H
 
 #include "stdint.h"
+#include "stddef.h"
 
 typedef struct {
     uint64_t buffer_size;
     uint64_t buffer_pos;
+    uint64_t buffer_end;
     uint8_t *buffer;
 
     uint64_t file_pos;
@@ -15,19 +17,20 @@ typedef struct {
     uint8_t error_occured;
     uint8_t open;
 
-    uint8_t buffered_char;
+    uint8_t newline_buffered;
+    uint8_t blocking;
+    char *filename;
 } FILE;
 
-#define FILE_BUFFERED_CHAR_UNBUFFERED 1 //[start of heading ctrl]
-#define FILE_BUFFERED_CHAR_FULLY_BUFFERED 2 //[start of text ctrl]
+typedef uint64_t fpos_t;
 
 #define _IOFBF //TODO
 #define _IOLBF //TODO
 #define _IONBF //TODO
 
-#define BUFSZ 512//TODO
+#define BUFSIZ 4096
 
-#define EOF (int)-256 //leave room for errors and other shit
+#define EOF (int)-256 /*leave room for errors and other shit*/
 
 #define FOPEN_MAX 1024
 #define FILENAME_MAx 512
@@ -38,7 +41,7 @@ typedef struct {
 #define SEEK_END 2
 #define SEEK_SET 3
 
-#define TMP_MAX (int)0x7FFFFFFF //largest positive int
+#define TMP_MAX (int)0x7FFFFFFF /*largest positive int*/
 
 #define WCHAR_UNSUPPORTED -1
 
@@ -78,9 +81,9 @@ int fgets();
 int fprintf();
 int fputc();
 int fputs();
-int fread();
+size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
 int fscanf();
-int fwrite(); 
+size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
 int getc();
 int getchar(); 
 int gets();
@@ -95,4 +98,19 @@ int vfscanf();
 int vprintf(); 
 int vscanf();
 
+//operations on files
+int remove(const char *filename);
+int rename(const char *old_filename, const char *new_filename);
+FILE *tmpfile();
+char *tmpnam(char *str);
+int fclose(FILE *stream);
+int fflush(FILE *stream);
+FILE *fopen(const char *filename, const char *mode);
+FILE *freopen(const char *filename, const char *mode, FILE *stream);
+void setbuf(FILE *stream, char *buffer);
+int setvbuf(FILE *stream, char *buffer, int mode, size_t size);
+
+
+//fseek first flushes
+//...
 #endif

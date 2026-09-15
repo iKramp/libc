@@ -18,7 +18,7 @@ void libc_heap_init() {
     uint8_t *region_name = (uint8_t *) "heap";
     syscall_2ret ret = _make_region(addr, order, permissions, region_type, management_mode, region_name_len, region_name);
 
-    if (ret.ret0 == -1) {
+    if (ret.ret0 == (uint64_t)-1) {
         _exit(1);
     }
 
