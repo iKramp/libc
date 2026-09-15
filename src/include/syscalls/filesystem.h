@@ -2,7 +2,7 @@
 #define LIBC_SYSCALL_FS_H
 
 #include "sys/abi/filesystem.h"
-#include "include/syscalls/syscall_generic.h"
+#include "syscalls/syscall_generic.h"
 
 int _fopen(uint64_t path_len, const char* path_ptr, uint64_t fd, uint64_t flags);
 int _fclose(uint64_t fd);
