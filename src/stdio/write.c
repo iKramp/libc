@@ -26,8 +26,17 @@ int drain_buffer(FILE *stream, uint8_t force_flush) {
         }
     }
 
-    return _fwrite(stream->fd, cnt, stream->buffer);
-    
+    int bytes_written = _fwrite(stream->fd, cnt, stream->buffer);
+    if (bytes_written < 0) {
+        stream->error_occured = 1;
+        return -1;
+    }
+    stream->buffer_pos += bytes_written;
+    if (stream->buffer_pos == stream->buffer_end) {
+        stream->buffer_pos = 0;
+        stream->buffer_end = 0;
+    }
+    return 0;
 }
 
 //doesn't perform OS writes, doesn't perform partial writes
