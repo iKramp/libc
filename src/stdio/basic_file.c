@@ -17,10 +17,6 @@ void free_stream_members(FILE *stream) {
 
 int fopen_file(FILE *stream, const char *filename, const char *mode) {
     free_stream_members(stream);
-    stream->buffer_pos = 0;
-    stream->reached_eof = 0;
-    stream->error_occured = 0;
-
     uint8_t mode_num = 0;
     uint8_t binary = 0;
     uint8_t update = 0;

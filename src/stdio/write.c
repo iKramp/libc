@@ -18,7 +18,7 @@ int drain_buffer(FILE *stream, uint8_t force_flush) {
     if (force_flush) {
         cnt = stream->buffer_end - stream->buffer_pos;
     } else {
-        void *pos = memchr(stream->buffer + stream->buffer_pos, '\n', stream->buffer_end - stream->buffer_pos);
+        void *pos = memrchr(stream->buffer + stream->buffer_pos, '\n', stream->buffer_end - stream->buffer_pos);
         if (pos == NULL) {
             cnt = stream->buffer_end - stream->buffer_pos;
         } else {
@@ -37,7 +37,7 @@ size_t write_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
     size_t available_elements = available_space / size;
     size_t n_elements = available_elements < nmemb ? available_elements : nmemb;
     memcpy(stream->buffer + stream->buffer_end, ptr, n_elements * size);
-    stream->buffer_end += n_elements * nmemb;
+    stream->buffer_end += n_elements * size;
     return n_elements;
 }
 
