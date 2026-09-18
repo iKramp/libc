@@ -1,5 +1,4 @@
 #include "write.h"
-#include "syscalls/syscall_generic.h"
 #include "syscalls/filesystem.h"
 #include <string.h>
 

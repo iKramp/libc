@@ -9,6 +9,7 @@ typedef struct {
     uint64_t buffer_pos;
     uint64_t buffer_end;
     uint8_t *buffer;
+    uint8_t buffer_direction; //0: read, 1: write
 
     uint64_t file_pos;
     uint32_t fd;
