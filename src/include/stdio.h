@@ -79,7 +79,6 @@ int ungetwc();
 //byte inout
 int fgetc();
 int fgets();
-int fprintf();
 int fputc();
 int fputs();
 size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
@@ -88,15 +87,12 @@ size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restr
 int getc();
 int getchar(); 
 int gets();
-int printf(); 
 int putc();
 int putchar();
 int puts();
 int scanf() ;
 int ungetc() ;
-int vfprintf(); 
 int vfscanf();
-int vprintf(); 
 int vscanf();
 
 //operations on files
@@ -111,10 +107,11 @@ FILE *freopen(const char *filename, const char *mode, FILE *stream);
 void setbuf(FILE *stream, char *buffer);
 int setvbuf(FILE *stream, char *buffer, int mode, size_t size);
 
+//formatting output functions
+int sprintf(void * restrict ptr, const char * restrict format, ...);
 
 //fseek first flushes
 //...
-
 
 //error handling
 int feof(FILE *stream);
