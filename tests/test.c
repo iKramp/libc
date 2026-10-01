@@ -28,7 +28,8 @@ int main(void) {
 int error_cnt;
 const char *current_test_name;
 
-char *errors[256];
+#define MAX_ERRORS 256
+char *errors[MAX_ERRORS];
 
 void print_buffer(const char *buffer) {
     size_t len = strlen(buffer);
@@ -70,6 +71,9 @@ void end_test() {
 }
 
 void fail_test(char *message) {
+    if (error_cnt >= MAX_ERRORS) {
+        return;
+    }
     size_t len = strlen(message);
     char *error_message = (char *)malloc(len + 2);
     strcpy(error_message, message);
