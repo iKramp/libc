@@ -25,7 +25,7 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
         size_t left_in_format = format_length - num_bytes_read;
         size_t left_to_percent =
             (percent_pos != NULL)
-                ? (size_t)((char *)percent_pos - (format + num_bytes_read))
+                ? (size_t)((uint64_t)percent_pos - ((uint64_t)format + num_bytes_read))
                 : left_in_format;
         size_t bytes_to_copy = (left_to_percent < left_in_format)
                                    ? left_to_percent

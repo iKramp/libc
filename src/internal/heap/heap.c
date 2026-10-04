@@ -16,7 +16,7 @@
 //1024
 //above that we allocate whole pages
 
-static void *heap_start = NULL;
+static uint64_t heap_start = 0;
 static uint64_t heap_region_id = 0;
 
 struct HeapPageMetadata {
@@ -39,16 +39,20 @@ struct HeapAllocationData {
 };
 static struct HeapAllocationData HEAP[7];
 
-void populate_heap_page(struct HeapPageMetadata *metadata, uintptr_t page_addr) {
+void populate_heap_page(struct HeapPageMetadata *metadata, uint64_t page_addr) {
+    if (page_addr < heap_start || page_addr >= heap_start + ((uint64_t)1 << (HEAP_SIZE_ORDER * 9)) * 4096) {
+        _exit(1);
+    }
+
     uint64_t size_of_object = 1 << metadata->size_order_of_objects;
-    uint64_t addr_of_first = page_addr = (4096 - size_of_object * metadata->max_allocations);
+    uint64_t addr_of_first = page_addr + (4096 - size_of_object * metadata->max_allocations);
     for (uint64_t i = addr_of_first; i < page_addr + 4096; i += size_of_object) {
         struct EmptyBlock *empty_block = (struct EmptyBlock*)i;
         empty_block->ptr_to_prev = i - size_of_object;
         empty_block->ptr_to_next = i + size_of_object;
     }
     ((struct EmptyBlock *)addr_of_first)->ptr_to_prev = page_addr + 4096 - size_of_object;
-    ((struct EmptyBlock *)page_addr + 4096 - size_of_object)->ptr_to_next = addr_of_first;
+    ((struct EmptyBlock *)(page_addr + 4096 - size_of_object))->ptr_to_next = addr_of_first;
     metadata->ptr_to_first = addr_of_first;
     metadata->ptr_to_last = page_addr + 4096 - size_of_object;
 }
@@ -72,7 +76,7 @@ uint64_t HeapAllocationData__allocate(struct HeapAllocationData *self) {
 
     uint64_t allocated = self->ptr_to_first;
 
-    struct HeapPageMetadata *page_metadata = (struct HeapPageMetadata *)(self->ptr_to_first & !0xFFF);
+    struct HeapPageMetadata *page_metadata = (struct HeapPageMetadata *)(self->ptr_to_first & ~0xFFFULL);
     page_metadata->number_of_allocations += 1;
     self->free_objects -= 1;
 
@@ -96,7 +100,7 @@ uint64_t HeapAllocationData__allocate(struct HeapAllocationData *self) {
 }
 
 void HeapAllocationData__deallocate(struct HeapAllocationData *self, uint64_t addr) {
-    struct HeapPageMetadata *metadata = (struct HeapPageMetadata *)(addr & !0xFFF);
+    struct HeapPageMetadata *metadata = (struct HeapPageMetadata *)(addr & ~0xFFFULL);
 
     uint8_t no_empty_cells = self->free_objects == 0;
     uint8_t full_frame = metadata->max_allocations == metadata->number_of_allocations;
@@ -152,8 +156,8 @@ void libc_heap_init() {
     }
 
     heap_region_id = ret.ret0;
-    heap_start = (void *) ret.ret1;
-    init_buddy_allocator((uintptr_t)heap_start);
+    heap_start = ret.ret1;
+    init_buddy_allocator(heap_start);
 
     //can start actually using heap
 
@@ -194,7 +198,7 @@ void free(void *ptr) {
         return;
     }
 
-    uint64_t page_addr = (uint64_t)ptr & !0xFFF;
+    uint64_t page_addr = (uint64_t)ptr & ~0xFFFULL;
     uint64_t first_qword = *(uint64_t *)page_addr;
     if ((first_qword & ((uint64_t)1 << 63)) != 0) {
         //page

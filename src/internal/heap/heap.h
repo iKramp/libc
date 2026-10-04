@@ -5,6 +5,6 @@
 void libc_heap_init();
 uint64_t log2_rounded_up(uint64_t num);
 
-#define HEAP_SIZE_ORDER 3
+#define HEAP_SIZE_ORDER ((uint64_t)3)
 
 #endif

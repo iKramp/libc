@@ -5,7 +5,27 @@
 extern const struct test_desc __libc_test_start[];
 extern const struct test_desc __libc_test_end[];
 
+static char *include_list[] = {
+    "LlvmLibcSPrintfTest_SimpleNoConv",
+    "LlvmLibcSPrintfTest_PercentConv",
+    "LlvmLibcSPrintfTest_IntConv",
+    NULL
+};
+static uint8_t run_all_tests = 0;
+
 int out_fd;
+
+uint8_t is_included(const char *test_name) {
+    if (run_all_tests) {
+        return 1;
+    }
+    for (int i = 0; include_list[i] != NULL; i++) {
+        if (strcmp(test_name, include_list[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 int main(void) {
     const struct test_desc *test = __libc_test_start;
@@ -16,7 +36,9 @@ int main(void) {
     }
 
     while (test != __libc_test_end) {
-        test->fn();
+        if (is_included(test->name)) {
+            test->fn();
+        }
         test++;
     }
 

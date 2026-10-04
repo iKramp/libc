@@ -54,6 +54,7 @@ int sprintf(void *restrict ptr, const char *restrict format, ...) {
 
     format_args_ret ret = format_args(format, &arg_iter);
     memcpy(ptr, ret.buffer.data, ret.buffer.length);
+    ((char *)ptr)[ret.buffer.length] = '\0';
     va_end(args);
     vec_string_free(&ret.buffer);
     return ret.bytes_written;
