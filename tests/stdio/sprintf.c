@@ -3,6 +3,7 @@
 #include "stdio.h"
 
 #define LIBC_COPT_PRINTF_DISABLE_WIDE // no wide printing for now
+#define LIBC_COPT_PRINTF_DISABLE_BITINT //C23 feature
 
 #ifndef LIBC_COPT_PRINTF_DISABLE_WIDE
 #include "hdr/types/wint_t.h"

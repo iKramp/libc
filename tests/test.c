@@ -48,10 +48,11 @@ int main(void) {
 }
 
 int error_cnt;
+int msg_cnt;
 const char *current_test_name;
 
-#define MAX_ERRORS 256
-char *errors[MAX_ERRORS];
+#define MAX_MESSAGES 256
+char *messages[MAX_MESSAGES];
 
 void print_buffer(const char *buffer) {
     size_t len = strlen(buffer);
@@ -61,6 +62,7 @@ void print_buffer(const char *buffer) {
 
 void begin_test(const char *test_name) {
     error_cnt = 0;
+    msg_cnt = 0;
     current_test_name = test_name;
 
     char buffer[1024];
@@ -70,10 +72,16 @@ void begin_test(const char *test_name) {
     print_buffer(buffer);
 }
 
-void print_errors() {
-    for (int i = 0; i < error_cnt; i++) {
-        print_buffer(errors[i]);
-        free(errors[i]);
+void clear_messages() {
+    for (int i = 0; i < msg_cnt; i++) {
+        free(messages[i]);
+    }
+    msg_cnt = 0;
+}
+
+void print_messages() {
+    for (int i = 0; i < msg_cnt; i++) {
+        print_buffer(messages[i]);
     }
 }
 
@@ -85,23 +93,29 @@ void end_test() {
     } else {
         strcpy(buffer, "[FAIL]\n\0");
         print_buffer(buffer);
-        print_errors();
+        print_messages();
     }
+    clear_messages();
 
     //print result
     error_cnt = 0;
 }
 
 void fail_test(char *message) {
-    if (error_cnt >= MAX_ERRORS) {
+    add_message(message);
+    error_cnt++;
+}
+
+void add_message(char *message) {
+    if (msg_cnt >= MAX_MESSAGES) {
         return;
     }
     size_t len = strlen(message);
-    char *error_message = (char *)malloc(len + 2);
-    strcpy(error_message, message);
-    error_message[len] = '\n';
-    error_message[len + 1] = '\0';
-    errors[error_cnt++] = error_message;
+    char *message_new = (char *)malloc(len + 2);
+    strcpy(message_new, message);
+    message_new[len] = '\n';
+    message_new[len + 1] = '\0';
+    messages[msg_cnt++] = message_new;
 }
 
 size_t print_number_hex(char *buffer, uint64_t number) {

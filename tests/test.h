@@ -14,6 +14,7 @@ struct test_desc {
 
 void begin_test(const char *test_name);
 void fail_test(char *message);
+void add_message(char *message);
 void format_invalid_number(char *buffer, char *message, uint64_t expected,
                            uint64_t actual);
 void format_invalid_string(char *buffer, char *message, char *expected,
@@ -27,6 +28,8 @@ void end_test();
             format_invalid_number(buffer, "Expected equality", (uint64_t)(a),  \
                                   (uint64_t)(b));                              \
             fail_test(buffer);                                                 \
+        } else {                                                               \
+            add_message("Number equality: " #a " == " #b);                     \
         }                                                                      \
     } while (0)
 #define ASSERT_EQ(a, b) EXPECT_EQ(a, b) /*don't end testing on failiure*/
@@ -42,6 +45,8 @@ void end_test();
                                   (char *)(a), (char *)(b));                   \
             fail_test(buffer);                                                 \
             free(buffer);                                                      \
+        } else {                                                               \
+            add_message("String equality: " #a " == " #b);                     \
         }                                                                      \
     } while (0)
 #define ASSERT_STREQ(a, b) EXPECT_STREQ(a, b) /*don't end testing on           \

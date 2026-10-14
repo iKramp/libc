@@ -20,7 +20,7 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
     vec_string_init(&buffer);
 
     while (1) {
-        void *percent_pos = memchr(format + num_bytes_read, '%', -1);
+        void *percent_pos = memchr(format + num_bytes_read, '%', format_length - num_bytes_read);
 
         size_t left_in_format = format_length - num_bytes_read;
         size_t left_to_percent =
@@ -67,6 +67,7 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
         size_t precision = -2; //default
         if (format_specifier_current[0] == '.') {
             format_specifier_current++;
+            num_bytes_read++;
             precision =
                 parse_field_width(format_specifier_current, &format_length);
             format_specifier_current += format_length;
@@ -122,19 +123,20 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
                                  ? specifier.field_width - formatted_len
                                  : 0;
         const char *padding_str = "                                "; //32 spaces
-        if (padding_len > 0 && specifier.flags.left_justify) {
-            for (size_t i = 0; i < padding_len; i += 32) {
-                size_t chunk_size = (padding_len - i < 32) ? padding_len - i : 32;
-                vec_string_append(&buffer, padding_str, chunk_size);
-            }
-        }
-        vec_string_append(&buffer, formatted_arg.data, formatted_len);
         if (padding_len > 0 && !specifier.flags.left_justify) {
             for (size_t i = 0; i < padding_len; i += 32) {
                 size_t chunk_size = (padding_len - i < 32) ? padding_len - i : 32;
                 vec_string_append(&buffer, padding_str, chunk_size);
             }
         }
+        vec_string_append(&buffer, formatted_arg.data, formatted_len);
+        if (padding_len > 0 && specifier.flags.left_justify) {
+            for (size_t i = 0; i < padding_len; i += 32) {
+                size_t chunk_size = (padding_len - i < 32) ? padding_len - i : 32;
+                vec_string_append(&buffer, padding_str, chunk_size);
+            }
+        }
+        num_bytes_written += formatted_len + padding_len;
     }
 
     format_args_ret ret = {buffer, num_bytes_written};

@@ -21,6 +21,9 @@ void increase_capacity(vec_string *str, size_t new_capacity) {
         return;
     }
     new_capacity = new_capacity > str->capacity * 2 ? new_capacity : str->capacity * 2;
+    if (new_capacity < 8) {
+        new_capacity = 8; // Minimum capacity
+    }
     char *new_data = (char *)malloc(new_capacity);
     if (str->data != NULL) {
         for (size_t i = 0; i < str->length; i++) {

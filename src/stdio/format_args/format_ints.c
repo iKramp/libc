@@ -1,4 +1,5 @@
 #include "format_ints.h"
+#include "syscalls/proc.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -144,6 +145,10 @@ vec_string uint_conversion(struct conversion_specifier specifier, arg_iterator *
     //static buffer of 65 characters is enough for int64_t in binary representation
     char buffer[65];
     uint8_t length = convert_number(buffer, value, radix, uppercase);
+    uint64_t padding_len = (uint64_t)specifier.precision > (uint64_t)length ? (uint64_t)specifier.precision - (uint64_t)length : 0;
+    for (uint64_t i = 0; i < padding_len; i++) {
+        vec_string_append(&result, "0", 1);
+    }
     vec_string_append(&result, buffer, length);
     return result;
 }
