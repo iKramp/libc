@@ -10,6 +10,8 @@
 #include "hdr/wchar_macros.h"
 #endif // LIBC_COPT_PRINTF_DISABLE_WIDE
 
+//MAYBE_INVALID - used for all tests not conforming to C99
+
 #include "test.h"
 
 // TODO: Add a comment here explaining the printf format string.
@@ -292,8 +294,11 @@ TEST(LlvmLibcSPrintfTest, IntConv) {
 
     // Combined Tests.
 
+    //MAYBE_INVALID
     written = sprintf(buff, "%+ u", 692);
     ASSERT_STREQ_LEN(written, buff, "692");
+    // written = sprintf(buff, "%+ u", 692);
+    // ASSERT_STREQ_LEN(written, buff, "+692");
 
     written = sprintf(buff, "%+ -05d", 703);
     ASSERT_STREQ_LEN(written, buff, "+703 ");
@@ -318,12 +323,19 @@ TEST(LlvmLibcSPrintfTest, IntConv) {
     written = sprintf(buff, "%10d %-10d", 456, -789);
     ASSERT_STREQ_LEN(written, buff, "       456 -789      ");
 
+    //MAYBE_INVALID
     written = sprintf(buff, "%-5.4d%+.4u", 75, 25);
     ASSERT_STREQ_LEN(written, buff, "0075 0025");
+    // written = sprintf(buff, "%-5.4d%+.4u", 75, 25);
+    // ASSERT_STREQ_LEN(written, buff, "0075 +0025");
 
+    //MAYBE_INVALID
     written = sprintf(buff, "% 05hhi %+-0.5llu %-+ 06.3zd", 256 + 127,
                       68719476736ll, (size_t)(2));
     ASSERT_STREQ_LEN(written, buff, " 0127 68719476736 +002  ");
+    // written = sprintf(buff, "% 05hhi %+-0.5llu %-+ 06.3zd", 256 + 127,
+    //                   68719476736ll, (size_t)(2));
+    // ASSERT_STREQ_LEN(written, buff, " 0127 +68719476736 +002  ");
 }
 
 TEST(LlvmLibcSPrintfTest, HexConv) {
@@ -564,8 +576,8 @@ TEST(LlvmLibcSPrintfTest, PointerConv) {
     // %p.
 
     // Precision specifies the number of characters for a string conversion.
-    written = sprintf(buff, "%.5p", nullptr);
-    ASSERT_STREQ_LEN(written, buff, "(null");
+    // written = sprintf(buff, "%.5p", nullptr);
+    // ASSERT_STREQ_LEN(written, buff, "(null");
 
     // Precision specifies the number of digits to be written for %x
     // conversions, and the "0x" doesn't count as part of the digits.

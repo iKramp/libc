@@ -8,7 +8,13 @@ extern const struct test_desc __libc_test_end[];
 static char *include_list[] = {
     "LlvmLibcSPrintfTest_SimpleNoConv",
     "LlvmLibcSPrintfTest_PercentConv",
+    "LlvmLibcSPrintfTest_CharConv",
+    "LlvmLibcSPrintfTest_StringConv",
     "LlvmLibcSPrintfTest_IntConv",
+    "LlvmLibcSPrintfTest_HexConv",
+    "LlvmLibcSPrintfTest_BinConv",
+    "LlvmLibcSPrintfTest_PointerConv",
+    "LlvmLibcSPrintfTest_OctConv",
     NULL
 };
 static uint8_t run_all_tests = 0;

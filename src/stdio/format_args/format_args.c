@@ -70,6 +70,9 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
             num_bytes_read++;
             precision =
                 parse_field_width(format_specifier_current, &format_length);
+            if (precision == (size_t)-2) {
+                precision = 0; //default for just .
+            }
             format_specifier_current += format_length;
             num_bytes_read += format_length;
         }
@@ -87,6 +90,10 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
         specifier.field_width = field_width;
         specifier.precision = precision;
         specifier.len_modifier = len_modifier;
+
+        if (specifier.precision != (size_t)-2 || specifier.flags.left_justify) {
+            specifier.flags.zero_padding = 0; // Ignore zero padding if precision or left justify is specified
+        }
 
         if (format_length == 0) {
             // Invalid format specifier, treat it as a literal '%'
@@ -110,6 +117,7 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
             formatted_arg = int_conversion(specifier, arg_iter);
             break;
         case SPECIFIER_UINT:
+        case SPECIFIER_VOID_POINTER:
             formatted_arg = uint_conversion(specifier, arg_iter);
             break;
         default:
@@ -122,6 +130,9 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
         size_t padding_len = formatted_len < specifier.field_width
                                  ? specifier.field_width - formatted_len
                                  : 0;
+        if (specifier.flags.zero_padding) {
+            padding_len = 0; //number conversion handles zero padding
+        }
         const char *padding_str = "                                "; //32 spaces
         if (padding_len > 0 && !specifier.flags.left_justify) {
             for (size_t i = 0; i < padding_len; i += 32) {
@@ -261,7 +272,12 @@ struct conversion_specifier parse_conversion_specifier(const char *format,
     case 'i':
         specifier.type = SPECIFIER_INT;
         break;
+    case 'b':
+    case 'B':
+    case 'o':
     case 'u':
+    case 'x':
+    case 'X':
         specifier.type = SPECIFIER_UINT;
         break;
     case 'f':
