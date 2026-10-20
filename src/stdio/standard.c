@@ -30,18 +30,18 @@ void check_standard_file(FILE *fp, uint8_t fd) {
         //request fd but accept anything that is returned
         res = _fopen(strlen(null), null, -1, flags, fd);
         if (res == -1) {
-            _exit(1);
+            _exit(0x100);
         }
         fd = res;
         res = _fstat(fd, &inode_stat);
         if (res) {
-            _exit(1);
+            _exit(0x101);
         }
     }
 
     void *buffer = malloc(BUFSIZ);
     if (!buffer) {
-        _exit(1);
+        _exit(0x102);
     }
 
     fp->buffer_size = BUFSIZ;

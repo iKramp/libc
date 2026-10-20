@@ -41,7 +41,7 @@ static struct HeapAllocationData HEAP[7];
 
 void populate_heap_page(struct HeapPageMetadata *metadata, uint64_t page_addr) {
     if (page_addr < heap_start || page_addr >= heap_start + ((uint64_t)1 << (HEAP_SIZE_ORDER * 9)) * 4096) {
-        _exit(1);
+        _exit(0x201);
     }
 
     uint64_t size_of_object = 1 << metadata->size_order_of_objects;
@@ -61,7 +61,7 @@ uint64_t HeapAllocationData__allocate(struct HeapAllocationData *self) {
     if (self->free_objects == 0) {
         uint64_t new_page = page_alloc(1);
         if (new_page == (uint64_t)-1) {
-            _exit(1);
+            _exit(0x202);
         }
 
         struct HeapPageMetadata metadata;
@@ -152,7 +152,7 @@ void libc_heap_init() {
     syscall_2ret ret = _make_region(addr, order, permissions, region_type, management_mode, region_name_len, region_name);
 
     if (ret.ret0 == (uint64_t)-1) {
-        _exit(1);
+        _exit(0x200);
     }
 
     heap_region_id = ret.ret0;

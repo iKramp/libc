@@ -72,7 +72,7 @@ void mark_index(uint64_t index, uint8_t value) {
 
 void mark_addr(uintptr_t addr, uint8_t value) {
     if (addr & 0xFFF || addr < buddy_allocator.heap_start_addr || addr >= buddy_allocator.heap_start_addr + PAGES * 0x1000) {
-        _exit(1);
+        _exit(0x304);
     }
     addr -= buddy_allocator.heap_start_addr;
     mark_index((addr >> 12) + (BITFIELD_TREE_ELEMENTS / 2), value);
@@ -124,10 +124,10 @@ void deallocate_page(uint64_t page_addr) {
 
 uint64_t allocate_page(size_t n_pages) {
     if (buddy_allocator.allocated_pages + n_pages > BITFIELD_TREE_ELEMENTS / 2) {
-        _exit(1);
+        _exit(0x303);
     }
     if (n_pages == 0) {
-        _exit(1);
+        _exit(0x302);
     }
 
     uint64_t index = find_contiguous_empty(n_pages);
@@ -137,7 +137,7 @@ uint64_t allocate_page(size_t n_pages) {
     buddy_allocator.allocated_pages += n_pages;
     uint64_t address = (index - BITFIELD_TREE_ELEMENTS / 2) * 4096;
     if (address > PAGES * 4096) {
-        _exit(1);
+        _exit(0x301);
     }
     address += buddy_allocator.heap_start_addr;
 
@@ -162,7 +162,7 @@ void page_free(uint64_t ptr, size_t n_pages) {
 
 uint64_t page_alloc(size_t n_pages) {
     if (n_pages == 0) {
-        _exit(1);
+        _exit(0x300);
     }
     return allocate_page(n_pages);
 }
