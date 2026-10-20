@@ -1,6 +1,7 @@
 #include "stdio/standard.h"
 #include "stdio.h"
 #include "memory.h"
+#include "stdio/stdio_common.h"
 #include "sys/abi/filesystem.h"
 #include "syscalls/filesystem.h"
 #include "syscalls/proc.h"
@@ -54,7 +55,7 @@ void check_standard_file(FILE *fp, uint64_t fd) {
     fp->reached_eof = 0;
     fp->error_occured = 0;
     fp->open = 1;
-    fp->newline_buffered = 1;
+    fp->buffer_mode = BUFFERED_LINE;
     fp->blocking = 1;
     fp->filename = null;
 }

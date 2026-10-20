@@ -7,29 +7,16 @@ size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict str
         return 0;
     }
 
-    uint8_t temp_eof = false;
-    size_t total_read_count = 0;
-
     while (1) {
         size_t read_count = read_buffer(stream, ptr, size, nmemb);
-        total_read_count += read_count;
-        if (read_count == nmemb || temp_eof) {
-            return total_read_count;
-        }
-        ptr = (char *)ptr + read_count * size;
-        nmemb -= read_count;
-
-        if (stream->reached_eof) {
-            //last element is partial
-            size_t individual_read_cnt = read_buffer(stream, ptr, size, 1);
-            if (individual_read_cnt == size) {
-                //should be impossible but just in case
-                total_read_count += 1;
-            }
-            return total_read_count;
+        if (read_count > 0) {
+            return read_count;
         }
 
-        temp_eof = fill_buffer(stream);
+        uint8_t temp_eof = fill_buffer(stream);
+        if (temp_eof && stream->reached_eof) {
+            return 0; // EOF reached, no more data to read
+        }
     }
 }
 

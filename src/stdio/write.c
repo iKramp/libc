@@ -1,6 +1,7 @@
 #include "write.h"
 #include "syscalls/filesystem.h"
 #include <string.h>
+#include "stdio_common.h"
 
 static void move_data_to_start(FILE *stream) {
     if (stream->buffer_pos > 0) {
@@ -12,7 +13,7 @@ static void move_data_to_start(FILE *stream) {
 
 //force_flush: true ignores buffering by newline
 int drain_buffer(FILE *stream, uint8_t force_flush) {
-    force_flush |= !stream->newline_buffered;
+    force_flush |= (stream->buffer_mode == BUFFERED_NONE);
     size_t cnt;
     if (force_flush) {
         cnt = stream->buffer_end - stream->buffer_pos;

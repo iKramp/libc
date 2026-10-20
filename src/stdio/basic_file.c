@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stdio_common.h"
 
 void free_stream_members(FILE *stream) {
     if (stream->buffer != NULL) {
@@ -81,7 +82,7 @@ int fopen_file(FILE *stream, const char *filename, const char *mode) {
     stream->error_occured = 0;
     stream->open = 1;
 
-    stream->newline_buffered = 0;
+    stream->buffer_mode = BUFFERED_LINE;
 
     return 0;
 }

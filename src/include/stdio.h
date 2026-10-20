@@ -19,7 +19,7 @@ typedef struct {
     uint8_t error_occured;
     uint8_t open;
 
-    uint8_t newline_buffered;
+    uint8_t buffer_mode;
     uint8_t blocking;
     char *filename;
 } FILE;
