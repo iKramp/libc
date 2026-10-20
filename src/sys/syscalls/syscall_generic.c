@@ -77,7 +77,7 @@ syscall_2ret syscall5(uint64_t syscall_index, uint64_t namespace_index, uint64_t
     uint64_t ret0 = arg0, ret1 = arg1;
 
     register uint64_t r8 __asm__("r8") = arg3;
-    register uint64_t r9 __asm__("r8") = arg4;
+    register uint64_t r9 __asm__("r9") = arg4;
 
     __asm__ volatile (
         "syscall"
