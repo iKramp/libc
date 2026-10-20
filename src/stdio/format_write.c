@@ -46,9 +46,8 @@ double next_double_var_arg(void *args) {
 }
 
 vec_string format_from_va_list(const char *format, va_list args) {
-    struct var_arg_iterator var_arg_iter = {
-        .arg_index = 0,
-    };
+    struct var_arg_iterator var_arg_iter;
+    var_arg_iter.arg_index = 0;
 
     va_copy(var_arg_iter.args, args);
 

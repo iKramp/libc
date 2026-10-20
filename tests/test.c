@@ -36,7 +36,7 @@ uint8_t is_included(const char *test_name) {
 int main(void) {
     const struct test_desc *test = __libc_test_start;
 
-    out_fd = _fopen(4, "/tty", 0, make_open_flags(1, 1, 0, 0));
+    out_fd = _fopen(4, "/tty", -1, make_open_flags(1, 1, 0, 0), -1);
     if (out_fd < 0) {
         return -1;
     }
