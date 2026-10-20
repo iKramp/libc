@@ -5,6 +5,8 @@
 #include "syscalls/syscall_generic.h"
 #include "stdint.h"
 #include "stddef.h"
+#include "stdlib.h"
+#include <string.h>
 
 //min allocation is 16 bytes
 //16
@@ -172,6 +174,52 @@ void libc_heap_init() {
     HEAP[4].size_order_of_objects = 8;
     HEAP[5].size_order_of_objects = 9;
     HEAP[6].size_order_of_objects = 10;
+}
+
+uint64_t get_object_size(void *ptr) {
+    if (ptr == (void *)&HEAP) {
+        return 0;
+    }
+
+    uint64_t page_addr = (uint64_t)ptr & ~0xFFFULL;
+    uint64_t first_qword = *(uint64_t *)page_addr;
+    if ((first_qword & ((uint64_t)1 << 63)) != 0) {
+        //page
+        uint64_t original_size = first_qword & !((uint64_t)1 << 63);
+        return original_size;
+    } else {
+        struct HeapPageMetadata *metadata = (struct HeapPageMetadata *)page_addr;
+        uint64_t size = 1 << metadata->size_order_of_objects;
+        return size;
+    }
+}
+
+void *realloc(void *old_ptr, size_t new_size) {
+    void *new_ptr = malloc(new_size);
+    if (!old_ptr) {
+        return new_ptr;
+    }
+
+    if (!new_ptr) {
+        return new_ptr; //failed to allocate, keep old
+    }
+
+    uint64_t old_size = get_object_size(old_ptr);
+    uint64_t size_to_copy = old_size < new_size ? old_size : new_size;
+
+    memcpy(new_ptr, old_ptr, size_to_copy);
+    free(old_ptr);
+    return new_ptr;
+}
+
+void *calloc(size_t nmemb, size_t size) {
+    void *res = malloc(nmemb * size);
+    if (!res) {
+        return res;
+    }
+
+    memset(res, 0, nmemb * size);
+    return res;
 }
 
 void *malloc(size_t size) {

@@ -1,6 +1,6 @@
 #include "stdio/standard.h"
 #include "stdio.h"
-#include "memory.h"
+#include "stdlib.h"
 #include "stdio/stdio_common.h"
 #include "sys/abi/filesystem.h"
 #include "syscalls/filesystem.h"
