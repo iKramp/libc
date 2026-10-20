@@ -1,6 +1,7 @@
 #include "internal/heap/heap.h"
 #include "internal/sys/syscall_map.h"
 #include "internal/sys/namespace.h"
+#include "stdio/standard.h"
 #include "syscalls/proc.h"
 #include <stdint.h>
 
@@ -27,6 +28,7 @@ void _libc_init() {
     init_mapped_syscall_packs();
     libc_heap_init();
     init_namespaces();
+    init_standard_io();
 }
 
 void _libc_start() {

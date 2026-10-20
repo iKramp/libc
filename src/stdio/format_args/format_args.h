@@ -14,6 +14,7 @@ typedef struct {
     // uint64_t (*peek_arg)(void *args);
     uint64_t (*next_unsigned_arg)(void *args, uint8_t n_bytes);
     int64_t (*next_signed_arg)(void *args, uint8_t n_bytes);
+    double (*next_double_arg)(void *args);
     // uint64_t (*get_nth_arg)(void *args, size_t n);
 } arg_iterator;
 

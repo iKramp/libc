@@ -50,7 +50,7 @@ int fopen_file(FILE *stream, const char *filename, const char *mode) {
 
     uint64_t flags = make_open_flags(read, write, append, truncate);
 
-    int fd = _fopen(strlen(filename), filename, 0, flags);
+    int fd = _fopen(strlen(filename), filename, -1, flags, -1);
     if (fd < 0) {
         free_stream_members(stream);
         free(stream);

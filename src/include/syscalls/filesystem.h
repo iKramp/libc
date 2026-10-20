@@ -4,7 +4,7 @@
 #include "sys/abi/filesystem.h"
 #include "syscalls/syscall_generic.h"
 
-int _fopen(uint64_t path_len, const char* path_ptr, uint64_t fd, uint64_t flags);
+int _fopen(uint64_t path_len, const char* path_ptr, uint64_t fd_rel, uint64_t flags, uint64_t fd);
 int _fclose(uint64_t fd);
 syscall_2ret _fread(uint64_t fd, uint64_t count, void* buf, uint64_t flags);
 int _fwrite(uint64_t fd, uint64_t count, const void* buf);

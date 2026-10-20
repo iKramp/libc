@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 #include "stddef.h"
+#include <stdarg.h>
 
 typedef struct {
     uint64_t buffer_size;
@@ -79,7 +80,7 @@ int ungetwc();
 //byte inout
 int fgetc();
 int fgets();
-int fputc();
+int fputc(int chr, FILE *stream);
 int fputs();
 size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream);
 int fscanf();
@@ -108,7 +109,14 @@ void setbuf(FILE *stream, char *buffer);
 int setvbuf(FILE *stream, char *buffer, int mode, size_t size);
 
 //formatting output functions
+int printf(const char * restrict format, ...);
 int sprintf(void * restrict ptr, const char * restrict format, ...);
+int snprintf(char *restrict str, size_t size, const char *restrict format, ...);
+int fprintf(FILE * restrict stream, const char * restrict format, ...);
+int vprintf(const char *restrict format, va_list args);
+int vsprintf(char * restrict str, const char * restrict format, va_list args);
+int vsnprintf(char * restrict str, size_t size, const char * restrict format, va_list args);
+int vfprintf(FILE *restrict stream, const char *restrict format, va_list args);
 
 //fseek first flushes
 //...

@@ -1,6 +1,7 @@
 #include "format_args.h"
 #include "internal/vec_string/vec_string.h"
 #include "stdio/format_args/format_ints.h"
+#include "stdio/format_args/format_strings.h"
 #include <string.h>
 
 struct format_flags parse_format_flags(const char *format,
@@ -119,6 +120,12 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
         case SPECIFIER_UINT:
         case SPECIFIER_VOID_POINTER:
             formatted_arg = uint_conversion(specifier, arg_iter);
+            break;
+        case SPECIFIER_CHAR:
+            formatted_arg = char_conversion(specifier, arg_iter);
+            break;
+        case SPECIFIER_STRING:
+            formatted_arg = string_conversion(specifier, arg_iter);
             break;
         default:
             vec_string_init(&formatted_arg);
