@@ -11,8 +11,7 @@ vec_string string_conversion(struct conversion_specifier specifier, arg_iterator
         str = "(null)";
     }
     uint64_t str_len = strlen(str);
-    uint64_t precision = specifier.precision != (size_t)-2 ? specifier.precision : str_len;
-    uint64_t len_to_copy = str_len < precision ? str_len : precision;
+    uint64_t len_to_copy = str_len < specifier.precision ? str_len : specifier.precision;
     vec_string result;
     vec_string_init(&result);
     vec_string_append(&result, str, len_to_copy);

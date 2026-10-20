@@ -148,7 +148,10 @@ format_args_ret format_args(const char *format, arg_iterator *arg_iter) {
             }
         }
         num_bytes_written += formatted_len + padding_len;
+
+        vec_string_free(&formatted_arg);
     }
+
 
     format_args_ret ret = {buffer, num_bytes_written};
     return ret;
