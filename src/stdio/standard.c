@@ -20,7 +20,7 @@ FILE *get_stderr() {
     return standard_io[2];
 }
 
-void check_standard_file(FILE *fp, uint8_t fd) {
+void check_standard_file(FILE *fp, uint64_t fd) {
     const char *null = "/null";
     InodeStat inode_stat;
     int res;
