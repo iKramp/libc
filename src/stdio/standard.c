@@ -67,4 +67,8 @@ void init_standard_io() {
     check_standard_file(stdin_fp, 0);
     check_standard_file(stout_fp, 1);
     check_standard_file(stderr_fp, 2);
+
+    standard_io[0] = stdin_fp;
+    standard_io[1] = stout_fp;
+    standard_io[2] = stderr_fp;
 }

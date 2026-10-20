@@ -23,6 +23,8 @@ CFLAGS := \
     -ffreestanding \
     -fno-builtin \
     -fno-stack-protector \
+	-fno-tree-vectorize \
+	-fno-tree-slp-vectorize \
     -Wall \
     -Wextra \
     -I$(SRC_DIR)/include \
