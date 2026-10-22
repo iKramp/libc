@@ -1,13 +1,8 @@
 #ifndef LIBC_STDDEF_H
 #define LIBC_STDDEF_H
 
-#include "stdint.h"
-
-typedef int64_t ptrdiff_t;
-typedef __SIZE_TYPE__ size_t;
-typedef uint32_t wchar_t;
-
-#define NULL ((void*)0)
+#include "specific/size_types.h"
+#include "specific/null.h"
 
 #define offsetof(type, member) ((size_t) &(((type *)0)->member))
 

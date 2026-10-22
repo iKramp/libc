@@ -1,7 +1,8 @@
 #ifndef LIBC_STDLIB_H
 #define LIBC_STDLIB_H
 
-#include "stddef.h" //size_t, wchar_t, null
+#include "specific/null.h" //NULL
+#include "specific/size_types.h" //size_t, wchar_t
 
 #define EXIT_FAILIURE -1
 #define EXIT_SUCCESS 0
