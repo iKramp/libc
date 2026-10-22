@@ -23,3 +23,10 @@ int _sleep(uint64_t seconds, uint64_t nanoseconds) {
     syscall_2ret ret = syscall2(syscall_index, ns, seconds, nanoseconds);
     return ret.ret0;
 }
+
+int _time(struct TimeInfo *time_info_ptr) {
+    uint64_t syscall_index = get_mapped_syscalls()->proc_pack + 3;
+    uint64_t ns = 0;
+    syscall_2ret ret = syscall1(syscall_index, ns, (uint64_t)time_info_ptr);
+    return ret.ret0;
+}
