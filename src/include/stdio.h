@@ -119,7 +119,7 @@ int vsnprintf(char * restrict str, size_t size, const char * restrict format, va
 int vfprintf(FILE *restrict stream, const char *restrict format, va_list args);
 
 //fseek first flushes
-//...
+int fseek(FILE *stream, long offset, int whence);
 
 //error handling
 int feof(FILE *stream);
