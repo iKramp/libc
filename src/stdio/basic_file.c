@@ -88,7 +88,7 @@ int fopen_file(FILE *stream, const char *filename, const char *mode) {
 }
 
 FILE *fopen(const char *filename, const char *mode) {
-    FILE *stream = malloc(sizeof(FILE));
+    FILE *stream = calloc(sizeof(FILE), 1);
     if (stream == NULL) {
         return NULL;
     }
