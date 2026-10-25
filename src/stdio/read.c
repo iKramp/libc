@@ -13,6 +13,12 @@ static void move_data_to_start(FILE *stream) {
 
 //true if temporary EOF is reached. Always false if file is opened in blocking mode
 uint8_t fill_buffer(FILE *stream) {
+    //probe buffer from 0 to end in 4096B increments for possibly unmapped regions
+    //volatile read
+    for (size_t i = 0; i < stream->buffer_size; i += 4096) {
+        volatile uint8_t _probe = stream->buffer[i];
+    }
+
     move_data_to_start(stream);
 
     syscall_2ret ret = _fread(stream->fd, stream->buffer_size - stream->buffer_end, stream->buffer + stream->buffer_end, make_read_flags(stream->blocking));
