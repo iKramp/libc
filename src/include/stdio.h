@@ -30,7 +30,7 @@ typedef uint64_t fpos_t;
 #define _IOLBF //TODO
 #define _IONBF //TODO
 
-#define BUFSIZ 4096
+#define BUFSIZ 4096 * 4
 
 #define EOF (int)-256 /*leave room for errors and other shit*/
 
