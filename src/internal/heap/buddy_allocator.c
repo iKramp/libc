@@ -141,7 +141,7 @@ uint64_t allocate_page(size_t n_pages) {
     }
     address += buddy_allocator.heap_start_addr;
 
-    for (uint64_t addr = buddy_allocator.max_accessed_addr; addr <= address + 4096; addr += 4096) {
+    for (uint64_t addr = buddy_allocator.max_accessed_addr; addr <= address + (4096 * n_pages); addr += 4096) {
         (void)*(volatile uint8_t *)addr; //probe
     }
 
