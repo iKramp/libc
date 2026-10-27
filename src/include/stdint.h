@@ -1,6 +1,8 @@
 #ifndef LIBC_STDINT_H
 #define LIBC_STDINT_H
 
+#include <limits.h>
+
 #if !defined(__LP64__)
 #error "This header is only for 64-bit targets"
 #endif
@@ -33,32 +35,6 @@ typedef uint64_t uintptr_t;
 typedef int64_t intmax_t;
 typedef uint64_t uintmax_t;
 
-#define INT8_MIN (-128)
-#define INT8_MAX 127
-#define UINT8_MAX 255
-
-#define INT16_MIN (-32768)
-#define INT16_MAX 32767
-#define UINT16_MAX 65535
-
-#define INT32_MIN (-2147483648)
-#define INT32_MAX 2147483647
-#define UINT32_MAX 4294967295U
-
-#define INT64_MIN (-9223372036854775807LL - 1)
-#define INT64_MAX 9223372036854775807LL
-#define UINT64_MAX 18446744073709551615ULL
-
-#define INT_MAX INT32_MAX
-#define UINT_MAX UINT32_MAX
-#define LONG_MAX INT64_MAX
-#define ULONG_MAX UINT64_MAX
-#define LLONG_MAX INT64_MAX
-#define ULLONG_MAX UINT64_MAX
-
-#define INT_MIN INT32_MIN
-#define LONG_MIN INT64_MIN
-#define LLONG_MIN INT64_MIN
 
 
 #endif
