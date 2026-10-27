@@ -4,6 +4,12 @@
 #include "syscalls/filesystem.h"
 
 size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream) {
+    if (stream->buffer_direction != STREAM_DIR_READ) {
+        stream->buffer_direction = STREAM_DIR_READ;
+        stream->buffer_pos = 0;
+        stream->buffer_end = 0;
+    }
+
     if (size == 0 || nmemb == 0) {
         return 0;
     }
@@ -47,6 +53,12 @@ size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict str
 }
 
 size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restrict stream) {
+    if (stream->buffer_direction != STREAM_DIR_READ) {
+        stream->buffer_direction = STREAM_DIR_WRITE;
+        stream->buffer_pos = 0;
+        stream->buffer_end = 0;
+    }
+
     if (size == 0 || nmemb == 0) {
         return 0;
     }
@@ -94,6 +106,7 @@ size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restr
         }
     }
 
+    //no forcing, drain on newline
     drain_buffer(stream, false);
 
     return total_written_count;
