@@ -22,7 +22,7 @@ uint64_t saved_r13;
 uint64_t saved_r14;
 uint64_t saved_r15;
 
-extern int main();
+extern int main(int argc, char **argv, char **envp);
 
 void _libc_init() {
     init_mapped_syscall_packs();
@@ -34,7 +34,7 @@ void _libc_init() {
 void _libc_start() {
     _libc_init();
 
-    int ret = main();
+    int ret = main(saved_rdi, (char **) saved_rsi, (char **) saved_rdx);
 
     _exit((uint64_t) ret);
 }
