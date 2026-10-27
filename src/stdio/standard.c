@@ -40,6 +40,12 @@ void check_standard_file(FILE *fp, uint64_t fd) {
         }
     }
 
+    void *name = malloc(strlen(null) + 1);
+    if (!name) {
+        _exit(0x103);
+    }
+    memcpy(name, null, strlen(null) + 1);
+
     void *buffer = malloc(BUFSIZ);
     if (!buffer) {
         _exit(0x102);
@@ -57,7 +63,7 @@ void check_standard_file(FILE *fp, uint64_t fd) {
     fp->open = 1;
     fp->buffer_mode = BUFFERED_LINE;
     fp->blocking = 1;
-    fp->filename = null;
+    fp->filename = name;
 }
 
 void init_standard_io() {
