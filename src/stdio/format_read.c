@@ -9,3 +9,7 @@ int fgetc(FILE *stream) {
     }
     return (int)c;
 }
+
+int getchar() {
+    return fgetc(stdin);
+}
