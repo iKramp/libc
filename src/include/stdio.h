@@ -120,6 +120,7 @@ int vfprintf(FILE *restrict stream, const char *restrict format, va_list args);
 
 //fseek first flushes
 int fseek(FILE *stream, long offset, int whence);
+long int ftell(FILE *stream);
 
 //error handling
 int feof(FILE *stream);

@@ -18,3 +18,7 @@ int fseek(FILE *stream, long offset, int whence) {
     stream->file_pos = _fseek(stream->fd, offset, file_seek_mode);
     return 0;
 }
+
+long int ftell(FILE *stream) {
+    return stream->file_pos;
+}
