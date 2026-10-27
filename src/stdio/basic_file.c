@@ -48,10 +48,12 @@ int fopen_file(FILE *stream, const char *filename, const char *mode) {
     uint8_t write = (mode_num == 1) || (mode_num == 2) || update;
     uint8_t append = (mode_num == 2);
     uint8_t truncate = (mode_num == 1);
+    uint8_t create = (mode_num == 1) || (mode_num == 2);
 
     uint64_t flags = make_open_flags(read, write, append, truncate);
 
-    int fd = _fopen(strlen(filename), filename, -1, flags, -1);
+    int filename_len = strlen(filename);
+    int fd = _fopen(filename_len, filename, -1, flags, -1);
     if (fd < 0) {
         free_stream_members(stream);
         free(stream);
