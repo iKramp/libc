@@ -43,13 +43,21 @@ int drain_buffer(FILE *stream, uint8_t force_flush) {
 }
 
 //doesn't perform OS writes, doesn't perform partial writes
-size_t write_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
+struct ObjWriteResult write_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
+    if (size > stream->buffer_size) {
+        //perform a partial write
+        memcpy(stream->buffer + stream->buffer_end, ptr, stream->buffer_size - stream->buffer_end);
+        struct ObjWriteResult result = {0, stream->buffer_size - stream->buffer_end};
+        stream->buffer_end = stream->buffer_size;
+        return result;
+    }
+
     move_data_to_start(stream);
     size_t available_space = stream->buffer_size - stream->buffer_end;
     size_t available_elements = available_space / size;
     size_t n_elements = available_elements < nmemb ? available_elements : nmemb;
     memcpy(stream->buffer + stream->buffer_end, ptr, n_elements * size);
     stream->buffer_end += n_elements * size;
-    return n_elements;
+    return (struct ObjWriteResult){n_elements, 0};
 }
 

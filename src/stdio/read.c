@@ -13,12 +13,6 @@ static void move_data_to_start(FILE *stream) {
 
 //true if temporary EOF is reached. Always false if file is opened in blocking mode
 uint8_t fill_buffer(FILE *stream) {
-    //probe buffer from 0 to end in 4096B increments for possibly unmapped regions
-    //volatile read
-    for (size_t i = 0; i < stream->buffer_size; i += 4096) {
-        volatile uint8_t _probe = stream->buffer[i];
-    }
-
     move_data_to_start(stream);
 
     syscall_2ret ret = _fread(stream->fd, stream->buffer_size - stream->buffer_end, stream->buffer + stream->buffer_end, make_read_flags(stream->blocking));
@@ -35,12 +29,20 @@ uint8_t fill_buffer(FILE *stream) {
 }
 
 //doesn't perform OS reads, doesn't perform partial reads
-size_t read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
+struct ObjReadResult read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
+    if (size > stream->buffer_size) {
+        //perform a partial read
+        memcpy(ptr, stream->buffer + stream->buffer_pos, stream->buffer_end - stream->buffer_pos);
+        struct ObjReadResult result = {0, stream->buffer_end - stream->buffer_pos};
+        stream->buffer_pos = stream->buffer_end;
+        return result;
+    }
+
     size_t requested_size = size * nmemb;
     size_t stream_size = stream->buffer_end - stream->buffer_pos;
     size_t max_size = stream_size < requested_size ? stream_size : requested_size;
     size_t n_elements = max_size / size;
     memcpy(ptr, stream->buffer + stream->buffer_pos, size * n_elements);
     stream->buffer_pos += n_elements * size;
-    return n_elements;
+    return (struct ObjReadResult){n_elements, 0};
 }

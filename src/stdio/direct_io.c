@@ -8,10 +8,35 @@ size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict str
         return 0;
     }
 
+    size_t left_in_object = 0;
     while (1) {
-        size_t read_count = read_buffer(stream, ptr, size, nmemb);
-        if (read_count > 0) {
-            return read_count;
+        int size_, nmemb_;
+        if (left_in_object > 0) {
+            size_ = left_in_object;
+            nmemb_ = 1;
+        } else {
+            size_ = size;
+            nmemb_ = nmemb;
+        }
+
+        void *ptr_;
+        if (left_in_object > 0) {
+            ptr_ = (char *)ptr + (size - left_in_object);
+        } else {
+            ptr_ = ptr;
+        }
+
+        struct ObjReadResult result = read_buffer(stream, ptr_, size_, nmemb_);
+        if (result.whole_elements > 0) {
+            return result.whole_elements;
+        }
+
+        if (result.partial_bytes_read > 0) {
+            if (left_in_object == 0) {
+                left_in_object = size - result.partial_bytes_read;
+            } else {
+                left_in_object -= result.partial_bytes_read;
+            }
         }
 
         uint8_t temp_eof = fill_buffer(stream);
@@ -26,19 +51,45 @@ size_t fwrite(const void * restrict ptr, size_t size, size_t nmemb, FILE * restr
         return 0;
     }
 
-    //direct write for testing
-    return _fwrite(stream->fd, size * nmemb, ptr);
+    size_t left_to_write = nmemb;
+
     size_t total_written_count = 0;
+    size_t left_in_object = 0;
     while (1) {
-        size_t written_count = write_buffer(stream, (void *)ptr, size, nmemb);
-        total_written_count += written_count;
-        if (written_count == nmemb) {
+        int size_, nmemb_;
+        if (left_in_object > 0) {
+            size_ = left_in_object;
+            nmemb_ = 1;
+        } else {
+            size_ = size;
+            nmemb_ = left_to_write;
+        }
+
+        void *ptr_;
+        if (left_in_object > 0) {
+            ptr_ = (char *)ptr + (size - left_in_object);
+        } else {
+            ptr_ = (void *)ptr;
+        }
+
+        struct ObjWriteResult result = write_buffer(stream, (void *)ptr_, size_, nmemb_);
+        total_written_count += result.whole_elements;
+        left_to_write -= result.whole_elements;
+        ptr = (const char *)ptr + result.whole_elements * size;
+        if (total_written_count == nmemb) {
             break;
         }
-        ptr = (const char *)ptr + written_count * size;
-        nmemb -= written_count;
+        //could not write all elements
+        if (result.partial_bytes_written > 0) {
+            if (left_in_object == 0) {
+                left_in_object = size - result.partial_bytes_written;
+            } else {
+                left_in_object -= result.partial_bytes_written;
+            }
+        }
 
-        if (drain_buffer(stream, false) != 0) {
+        //force a drain, buffer has no more space
+        if (drain_buffer(stream, true) != 0) {
             break;
         }
     }

@@ -3,10 +3,15 @@
 
 #include "stdio.h"
 
+struct ObjReadResult {
+    size_t whole_elements;
+    size_t partial_bytes_read;
+};
+
 //true if temporary EOF is reached. Always false if file is opened in blocking mode
 uint8_t fill_buffer(FILE *stream);
 //doesn't perform OS reads, doesn't perform partial reads
-size_t read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb);
+struct ObjReadResult read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb);
 
 
 #endif
