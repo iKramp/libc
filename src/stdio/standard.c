@@ -71,6 +71,10 @@ void init_standard_io() {
     FILE *stout_fp = malloc(sizeof(FILE));
     FILE *stderr_fp = malloc(sizeof(FILE));
 
+    if (!stdin_fp || !stout_fp || !stderr_fp) {
+        _exit(0x104);
+    }
+
     check_standard_file(stdin_fp, 0);
     check_standard_file(stout_fp, 1);
     check_standard_file(stderr_fp, 2);

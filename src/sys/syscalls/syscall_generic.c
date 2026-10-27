@@ -2,6 +2,11 @@
 
 syscall_2ret syscall0(uint64_t syscall_index, uint64_t namespace_index) {
     uint64_t ret0, ret1;
+
+    __asm__ volatile (
+        "push rbx"    
+    );
+
     __asm__ volatile (
         "syscall"
         : "=d"(ret0), "=D"(ret1)
@@ -16,12 +21,22 @@ syscall_2ret syscall0(uint64_t syscall_index, uint64_t namespace_index) {
 
 syscall_2ret syscall1(uint64_t syscall_index, uint64_t namespace_index, uint64_t arg0) {
     uint64_t ret0 = arg0, ret1;
+
+    __asm__ volatile (
+        "push rbx"    
+    );
+
     __asm__ volatile (
         "syscall"
         : "+d"(ret0), "=D"(ret1)
         : "a"(syscall_index), "b"(namespace_index)
         : "memory"
     );
+
+    __asm__ volatile (
+        "pop rbx"
+    );
+
     syscall_2ret ret;
     ret.ret0 = ret0;
     ret.ret1 = ret1;
@@ -30,12 +45,22 @@ syscall_2ret syscall1(uint64_t syscall_index, uint64_t namespace_index, uint64_t
 
 syscall_2ret syscall2(uint64_t syscall_index, uint64_t namespace_index, uint64_t arg0, uint64_t arg1) {
     uint64_t ret0 = arg0, ret1 = arg1;
+
+    __asm__ volatile (
+        "push rbx"    
+    );
+
     __asm__ volatile (
         "syscall"
         : "+d"(ret0), "+D"(ret1)
         : "a"(syscall_index), "b"(namespace_index)
         : "memory"
     );
+
+    __asm__ volatile (
+        "pop rbx"
+    );
+
     syscall_2ret ret;
     ret.ret0 = ret0;
     ret.ret1 = ret1;
@@ -44,12 +69,22 @@ syscall_2ret syscall2(uint64_t syscall_index, uint64_t namespace_index, uint64_t
 
 syscall_2ret syscall3(uint64_t syscall_index, uint64_t namespace_index, uint64_t arg0, uint64_t arg1, uint64_t arg2) {
     uint64_t ret0 = arg0, ret1 = arg1;
+
+    __asm__ volatile (
+        "push rbx"    
+    );
+
     __asm__ volatile (
         "syscall"
         : "+d"(ret0), "+D"(ret1)
         : "a"(syscall_index), "b"(namespace_index), "S"(arg2)
         : "memory"
     );
+
+    __asm__ volatile (
+        "pop rbx"
+    );
+
     syscall_2ret ret;
     ret.ret0 = ret0;
     ret.ret1 = ret1;
