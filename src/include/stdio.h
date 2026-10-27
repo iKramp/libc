@@ -26,9 +26,9 @@ typedef struct {
 
 typedef uint64_t fpos_t;
 
-#define _IOFBF //TODO
-#define _IOLBF //TODO
-#define _IONBF //TODO
+#define _IOFBF 1
+#define _IOLBF 2
+#define _IONBF 3
 
 #define BUFSIZ (4096 * 4)
 

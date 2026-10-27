@@ -18,4 +18,8 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 void exit(int status);
 
+int atoi(const char *str);
+long int atol(const char *str);
+long long int atoll(const char *str);
+
 #endif
