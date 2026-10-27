@@ -10,7 +10,7 @@ typedef struct {
     uint64_t buffer_pos;
     uint64_t buffer_end;
     uint8_t *buffer;
-    uint8_t buffer_direction; //0: read, 1: write
+    uint8_t buffer_direction;
 
     uint64_t file_pos;
     uint32_t fd;
@@ -29,6 +29,10 @@ typedef uint64_t fpos_t;
 #define _IOFBF 1
 #define _IOLBF 2
 #define _IONBF 3
+
+#define STREAM_DIR_NONE 0
+#define STREAM_DIR_READ 1
+#define STREAM_DIR_WRITE 2
 
 #define BUFSIZ (4096 * 4)
 

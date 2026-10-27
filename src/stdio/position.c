@@ -16,6 +16,7 @@ int fseek(FILE *stream, long offset, int whence) {
 
 
     stream->file_pos = _fseek(stream->fd, offset, file_seek_mode);
+    stream->buffer_direction = STREAM_DIR_NONE;
     return 0;
 }
 

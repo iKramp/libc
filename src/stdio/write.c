@@ -13,6 +13,9 @@ static void move_data_to_start(FILE *stream) {
 
 //force_flush: true ignores buffering by newline
 int drain_buffer(FILE *stream, uint8_t force_flush) {
+    if (stream->buffer_direction != STREAM_DIR_WRITE) {
+        return 0;
+    }
     force_flush |= (stream->buffer_mode == BUFFERED_NONE);
     size_t cnt;
     if (force_flush) {

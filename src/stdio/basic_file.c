@@ -85,6 +85,7 @@ int fopen_file(FILE *stream, const char *filename, const char *mode) {
     stream->open = 1;
 
     stream->buffer_mode = BUFFERED_LINE;
+    stream->buffer_direction = STREAM_DIR_NONE;
 
     return 0;
 }
@@ -144,5 +145,8 @@ FILE *freopen(const char *filename, const char *mode, FILE *stream) {
 }
 
 int fflush(FILE *stream) {
-    return drain_buffer(stream, 1);
+    int ret =  drain_buffer(stream, 1);
+    stream->buffer_pos = 0;
+    stream->buffer_end = 0;
+    return ret;
 }
