@@ -78,7 +78,7 @@ int vwprintf();
 int ungetwc();
 
 //byte inout
-int fgetc();
+int fgetc(FILE *stream);
 int fgets();
 int fputc(int chr, FILE *stream);
 int fputs();
@@ -124,4 +124,8 @@ long int ftell(FILE *stream);
 
 //error handling
 int feof(FILE *stream);
+
+//extra
+int getline(char *buffer, size_t size, FILE *stream);
+
 #endif
