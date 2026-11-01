@@ -28,7 +28,8 @@ uint8_t fill_buffer(FILE *stream) {
     return (read_result == READ_RESULT_TEMPORARY_EOF) && !stream->blocking;
 }
 
-//doesn't perform OS reads, doesn't perform partial reads
+//doesn't perform OS reads
+//Does a partial read when size > buffer_size. Next calls should have nmemb = 1 and size = left_in_object to read the rest of the object
 struct ObjReadResult read_buffer(FILE *stream, void *ptr, size_t size, size_t nmemb) {
     if (size > stream->buffer_size) {
         //perform a partial read

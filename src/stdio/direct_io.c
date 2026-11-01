@@ -33,10 +33,12 @@ size_t fread(void * restrict ptr, size_t size, size_t nmemb, FILE * restrict str
         }
 
         struct ObjReadResult result = read_buffer(stream, ptr_, size_, nmemb_);
+        //if any whole elements are read, return that
         if (result.whole_elements > 0) {
             return result.whole_elements;
         }
 
+        //if a partial element is read, set left_in_object, fill buffer, and continue
         if (result.partial_bytes_read > 0) {
             if (left_in_object == 0) {
                 left_in_object = size - result.partial_bytes_read;
