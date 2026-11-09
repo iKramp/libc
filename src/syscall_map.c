@@ -11,7 +11,7 @@ MappedSyscallPacks *get_mapped_syscalls() {
 }
 
 void early_panic(int code) {
-    uint8_t *invalid_ptr = (uint8_t *)(0x8000000000000000 + code * 16); //kernel space
+    uint8_t *invalid_ptr = (uint8_t *)(0xfffffff000000000 + code * 16); //kernel space
     *invalid_ptr = 0xFF; //write to invalid address to trigger a page fault
 }
 
