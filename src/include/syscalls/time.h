@@ -1,0 +1,8 @@
+#ifndef LIBC_SYSCALL_TIME_H
+#define LIBC_SYSCALL_TIME_H
+
+#include "sys/abi/time_info.h"
+
+int _time(struct TimeInfo *time_info_ptr);
+
+#endif

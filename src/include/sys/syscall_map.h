@@ -10,6 +10,7 @@ typedef struct {
     uint32_t proc_pack;
     uint32_t memory_pack;
     uint32_t namespace_pack;
+    uint32_t time_pack;
 } MappedSyscallPacks;
 
 MappedSyscallPacks *get_mapped_syscalls();
