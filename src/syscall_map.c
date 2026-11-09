@@ -10,8 +10,8 @@ MappedSyscallPacks *get_mapped_syscalls() {
     return &mapped_syscalls;
 }
 
-void early_panic() {
-    uint8_t *invalid_ptr = (uint8_t *)0xFFFFFFFFFFFFFFFF; //kernel space
+void early_panic(int code) {
+    uint8_t *invalid_ptr = (uint8_t *)(0x8000000000000000 + code); //kernel space
     *invalid_ptr = 0xFF; //write to invalid address to trigger a page fault
 }
 
@@ -53,12 +53,12 @@ next_offset:
     }
 
     if (final_offset == (uint32_t)-1) {
-        early_panic();
+        early_panic(0);
     }
 
     int ret = _mappacks(name_len, (uint8_t *)name, final_offset);
     if (ret < 0) {
-        early_panic();
+        early_panic(1);
     }
     return final_offset;
 }
@@ -84,7 +84,7 @@ void init_mapped_syscall_packs() {
     mapped_syscalls->syscall_pack = 0xFFFFFFE0; //highest valid pack offset - standard
     int ret = _lspacks(SYSCALL_PACK_ARR_CNT, syscall_pack_arr);
     if (ret < 0) {
-        early_panic();
+        early_panic(3);
     }
 
     CHECK_PACK(fs, mapped_syscalls, filesystem_pack);
