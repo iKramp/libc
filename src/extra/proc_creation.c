@@ -121,7 +121,7 @@ int fork() {
 
     //intel syntax
     __asm__ volatile (
-        "mov rdx, child_continue_fork\n"
+        "movabs rdx, OFFSET FLAT:child_continue_fork\n"
         "mov [rsi], rdx\n"
         "mov [rdi], rax\n"
         "mov [rdi + 8*1], rbx\n"
