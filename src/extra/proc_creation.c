@@ -29,7 +29,7 @@ int clone() {
 
     //intel syntax
     __asm__ volatile (
-        "mov rdx, child_continue\n"
+        "mov rdx, child_continue_clone\n"
         "mov [rsi], rdx\n"
         "mov [rdi], rax\n"
         "mov [rdi + 8*1], rbx\n"
