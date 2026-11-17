@@ -27,7 +27,7 @@ typedef struct {
 typedef struct {
     uint64_t memory_namespace;
     uint64_t syscall_namespace;
-    uint64_t filesystem_namespace;
+    uint64_t open_file_namespace;
     uint64_t time_namespace;
     uint64_t mount_namespace;
 } NamespaceIds;

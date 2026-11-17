@@ -2,10 +2,10 @@
 #include "syscalls/syscall_generic.h"
 #include "sys/syscall_map.h"
 
-int _mknamespace(uint32_t namespace_type, uint64_t existing_id) {
+int _mknamespace(uint32_t namespace_type, uint64_t existing_id, bool clear_namespace) {
     uint64_t syscall_index = get_mapped_syscalls()->namespace_pack + 0;
     uint64_t ns = 0;
-    syscall_2ret ret = syscall2(syscall_index, ns, namespace_type, existing_id);
+    syscall_2ret ret = syscall3(syscall_index, ns, namespace_type, existing_id, clear_namespace);
     return ret.ret0;
 }
 

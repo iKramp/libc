@@ -9,7 +9,7 @@ typedef struct {
     uint64_t total_elements;
 } BufferFillResult;
 
-int _mknamespace(uint32_t namespace_type, uint64_t existing_id);
+int _mknamespace(uint32_t namespace_type, uint64_t existing_id, bool clear_namespace);
 int _rmnamespace(uint64_t namespace_id);
 int _chnamespace(uint64_t namespace_id);
 BufferFillResult _lsnamespace(uint64_t buf_size_elements, NamespaceInfo *buf);
