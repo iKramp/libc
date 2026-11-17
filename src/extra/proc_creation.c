@@ -100,7 +100,6 @@ int clone_namespaces_for_fork(NamespaceIds *target) {
 
 
 int fork() {
-    exit(561); //clone the stack
     char *name = "cloned proc, no name";
     uint64_t name_len = strlen(name);
 
