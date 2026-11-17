@@ -38,6 +38,7 @@ typedef struct {
     uint64_t entry_point;
     uint64_t name_len;
     uint8_t *name;
+    uint8_t clone_ns_table;
 } ExecArgs;
 
 #endif

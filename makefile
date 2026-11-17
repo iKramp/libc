@@ -28,7 +28,8 @@ CFLAGS := \
     -Wall \
     -Wextra \
     -I$(SRC_DIR)/include \
-	-I$(SRC_DIR)
+	-I$(SRC_DIR) \
+	-masm=intel
 
 TEST_CFLAGS := \
     $(CFLAGS) \
