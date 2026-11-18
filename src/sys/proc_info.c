@@ -1,1 +1,1 @@
-static int pid = -1;
+int pid = -1;
