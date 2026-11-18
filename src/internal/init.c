@@ -22,10 +22,13 @@ uint64_t saved_r13;
 uint64_t saved_r14;
 uint64_t saved_r15;
 
+extern int pid;
+
 extern int main(int argc, char **argv, char **envp);
 
 void _libc_init() {
     init_mapped_syscall_packs();
+    pid = _getpid();
     libc_heap_init();
     init_namespaces();
     init_standard_io();
